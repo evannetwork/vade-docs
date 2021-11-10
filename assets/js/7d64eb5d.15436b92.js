@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkvade_docs=self.webpackChunkvade_docs||[]).push([[4189],{8364:function(e){e.exports=JSON.parse('{"allTagsPath":"/vade-docs/blog/tags","slug":"/vade-docs/blog/tags/hello","name":"hello","count":2,"permalink":"/vade-docs/blog/tags/hello"}')}}]);

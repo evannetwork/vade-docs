@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkvade_docs=self.webpackChunkvade_docs||[]).push([[2112],{8393:function(e){e.exports=JSON.parse('{"permalink":"/vade-docs/blog/page/2","page":2,"postsPerPage":10,"totalPages":2,"totalCount":12,"previousPage":"/vade-docs/blog","nextPage":null,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

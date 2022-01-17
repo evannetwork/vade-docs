@@ -16,14 +16,21 @@ It implements the following [`VadePlugin`] functions:
 
 - [`did-create`] requires following params to be passed 
 
-  - Options: Object of [`IdentityArguments`]
-  - Method: DID method, in our case the method is "did:evan"
+| Parameter  | Description |
+| ------------- | ------------- |
+| options  | Object of [`IdentityArguments`]  |
+| method  | DID method, in our case the method is "did:evan" |
 
-```sh
-options={"privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106","identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906"}
+```json
+options={
+   "privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106",
+   "identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906"
+}
 
 method="did:evan"
+```
 
+```sh
 ./vade_evan_cli did create --method $method --options $options
 
 ```
@@ -36,17 +43,25 @@ method="did:evan"
 
 - [`did-update`]: requires following params to be passed 
 
-  - DID: DID to be updated
-  - Options: Object of [`DidUpdateArguments`]
-  - Payload: Payload to update for DID
+| Parameter  | Description |
+| ------------- | ------------- |
+| did  | DID to be updated  |
+| options  | Object of [`DidUpdateArguments`] |
+| payload  | Payload to update for DID |
 
-```sh
+```json
 did=did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906
 
-options={"privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106","identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906","operation":"setDidDocument"}
+options={
+   "privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106",
+   "identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906",
+   "operation":"setDidDocument"
+}
 
 payload="hello world"
+```
 
+```sh
 ./vade_evan_cli did update --did $did --options $DIDUpdateOptions --payload $payload
 ```
 
@@ -59,13 +74,33 @@ payload="hello world"
 - Output
 
 ```json
-{"@context":["https://www.w3.org/ns/did/v1","https://identity.foundation/EcdsaSecp256k1RecoverySignature2020/lds-ecdsa-secp256k1-recovery2020-0.0.jsonld"],"id":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736","verificationMethod":[{"id":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller","type":"EcdsaSecp256k1RecoveryMethod2020","controller":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736","blockchainAccountId":"0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736@eip155:1"}],"authentication":["did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller"],"assertionMethod":["did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller"]}
+{
+   "@context":[
+      "https://www.w3.org/ns/did/v1",
+      "https://identity.foundation/EcdsaSecp256k1RecoverySignature2020/lds-ecdsa-secp256k1-recovery2020-0.0.jsonld"
+   ],
+   "id":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736",
+   "verificationMethod":[
+      {
+         "id":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller",
+         "type":"EcdsaSecp256k1RecoveryMethod2020",
+         "controller":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736",
+         "blockchainAccountId":"0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736@eip155:1"
+      }
+   ],
+   "authentication":[
+      "did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller"
+   ],
+   "assertionMethod":[
+      "did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller"
+   ]
+}
 ```
 
-[`vade-evan-substrate`]: https://git.slock.it/equs/interop/vade/vade-evan-substrate
+[`vade-evan-substrate`]: #
 [`VadePlugin`]: https://docs.rs/vade/*/vade/trait.VadePlugin.html
-[`did_create`]: https://git.slock.it/equs/interop/vade/vade-evan-substrate/-/blob/develop/src/vade_evan_substrate.rs#L141
-[`did_resolve`]: https://git.slock.it/equs/interop/vade/vade-evan-substrate/-/blob/develop/src/vade_evan_substrate.rs#L261
-[`did_update`]: https://git.slock.it/equs/interop/vade/vade-evan-substrate/-/blob/develop/src/vade_evan_substrate.rs#L190
-[`DidUpdateArguments`]: https://git.slock.it/equs/interop/vade/vade-evan-substrate/-/blob/develop/src/vade_evan_substrate.rs#L43
-[`IdentityArguments`]: https://git.slock.it/equs/interop/vade/vade-evan-substrate/-/blob/develop/src/vade_evan_substrate.rs#L51
+[`did_create`]: /docs/references#did_create
+[`did_resolve`]: /docs/references#did_resolve
+[`did_update`]: /docs/references#did_update
+[`DidUpdateArguments`]: /docs/references#didupdatearguments
+[`IdentityArguments`]: /docs/references#identityarguments

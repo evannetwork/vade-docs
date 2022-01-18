@@ -15,7 +15,7 @@ So far we have discussed how plugins work individually and cater to specific fun
 - Bob receives the message and verifies the issued credential
 - At last Bob sends back an “ack” message to Alice
 
-Above scenario would be using [`vade-jwt-vc`] for JWT credential creation and signing, [`vade-didcomm`] for [`issue credential protocol`] and didcomm communication,[`vade-evan-cli`] for combining all plugins and using them seamlessly . 
+Above scenario would be using [`vade-jwt-vc`] for JWT credential creation and signing, [`vade-didcomm`] for [`issue credential protocol`] and didcomm communication,[`vade-evan-cli`] for combining all plugins and using them seamlessly.
 
 ![State digram](state.svg)
 
@@ -77,11 +77,13 @@ payload={
    "thid":"5b5c5765e0c84df5b0b47e93041e0943"
 }
 ```
-Notice the `type` parameter in payload as well as it mentions the protocol and it's message type being sent. 
+
+Notice the `type` parameter in payload as well as it mentions the protocol and it's message type being sent.
 
 ```sh
 ./vade_evan_cli didcomm send --options $option --payload $payload
 ```
+
 - Output of send
 This represents the actual message which is sent via `vade-didcomm`
 
@@ -92,7 +94,7 @@ This represents the actual message which is sent via `vade-didcomm`
       {
          "header":{
             "key_ops":[
-               
+
             ],
             "alg":"ECDH-1PU+XC20PKW",
             "kid":"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG",
@@ -112,6 +114,7 @@ This represents the actual message which is sent via `vade-didcomm`
    "tag":"FUnmXD1Kn0J3rjIV9nRNPg"
 }
 ```
+
 - Alice receives `propose-credential` request and check the proposal.
 
 ```json
@@ -133,7 +136,7 @@ message =  {
       {
          "header":{
             "key_ops":[
-               
+
             ],
             "alg":"ECDH-1PU+XC20PKW",
             "kid":"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG",
@@ -257,7 +260,7 @@ message =  {
       {
          "header":{
             "key_ops":[
-               
+
             ],
             "alg":"ECDH-1PU+XC20PKW",
             "kid":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
@@ -282,7 +285,7 @@ message =  {
 ./vade_evan_cli didcomm receive --options $receiver_option --payload $message
 ```
 
-- Bob checks the offered credentials. 
+- Bob checks the offered credentials.
 
 ```json
 {
@@ -307,8 +310,8 @@ message =  {
 }
 ```
 
-Once Bob receives the offered credentials by Alice, he would check them and decide if he wants those credential issues by Alice. If Bob aggres, he will send 
-`request-credential` message for the same credentials. 
+Once Bob receives the offered credentials by Alice, he would check them and decide if he wants those credential issues by Alice. If Bob aggres, he will send
+`request-credential` message for the same credentials.
 
 ### Bob sends “request-credential” to Alice
 
@@ -356,7 +359,6 @@ unsignedCredential = {
 
 - Bob sends `request-credential` request with attached base64 encoded `Unsigned Credential` to Alice.
 
-
 ```json
 option={
    "encryptionKeys":{
@@ -397,7 +399,7 @@ payload={
 
 ### Alice receives it and signs the JWT credential and creates an “issue-credential” message which contains the created credential as payload and sends it back to Bob
 
-- Alice receives `request-credential` request. 
+- Alice receives `request-credential` request.
 
 ```json
 receiver_option={
@@ -418,7 +420,7 @@ message =  {
       {
          "header":{
             "key_ops":[
-               
+
             ],
             "alg":"ECDH-1PU+XC20PKW",
             "kid":"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG",
@@ -492,6 +494,7 @@ payload={
    "issuerPublicKey":"jCv7l26izalfcsFe6j/IqtVlDolo2Y3lNld7xOG63GjSNHBVWrvZQe2O859q9JeVEV4yXtfYofGQSWrMVfgH5ySbuHpQj4fSgLu4xXyFgMidUO1sIe0NHRcXpOorP01o"
 }
 ```
+
 ```sh
 ./vade_evan_cli vc_zkp issue_credential --method $method --options $options --payload $payload
 ```
@@ -583,8 +586,7 @@ payload={
 
 ### Bob receives the message and verifies the issued credential
 
-- Bob receives `issue-credential` 
-
+- Bob receives `issue-credential`
 
 ```json
 receiver_option={
@@ -605,7 +607,7 @@ message =  {
       {
          "header":{
             "key_ops":[
-               
+
             ],
             "alg":"ECDH-1PU+XC20PKW",
             "kid":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
@@ -631,7 +633,6 @@ message =  {
 ```
 
 - Bob verifies the signed credential with [`vade-jwt-vc`].
-
 
 ```json
 method=did:evan
@@ -735,7 +736,7 @@ payload={
 ./vade_evan_cli didcomm send --options $option --payload $payload
 ```
 
-- Alice receives `ack` and closes the communication. 
+- Alice receives `ack` and closes the communication.
 
 ```json
 receiver_option={
@@ -756,7 +757,7 @@ message =  {
       {
          "header":{
             "key_ops":[
-               
+
             ],
             "alg":"ECDH-1PU+XC20PKW",
             "kid":"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG",

@@ -24,13 +24,12 @@ For the whole flow the vade-evan-bbs module has implemented the following comman
 - vc_zkp verify_proof
 - vc_zkp finish_credential
 
-
-
 To issue a credential, the issuer needs a DID Document currently registered on the `evan.network` substrate chain.
 
 ## Complete flow for creating a credential
 
 ### Creating a Schema
+
 Every credential is based on a specific schema. This schema describes the structure of the issued data for a credential.
 
 Creating a credential schema is needed as base for a credential with a BBS+ Proof. A schema defines the structure of the credential payload and how it is organized. The command creates a new DID and associates the needed DID Document structure for verifying and validating credentials.
@@ -113,6 +112,7 @@ example response:
 The returned JSON structure is your newly created schema did which can be used now when you want to issue credentials. It contains all the properties you defined and also a signature, which is signed by the provided `issuerProvingKey`. Schemas can be reused between JWT/BBS+ and CL Credentials.
 
 ### Creating a Revocation Registry
+
 Every created credential has the ability to be revoked by the issuer of the credential. For the BBS+ credentials we implemented the concept of the [RevocationList2020](https://w3c-ccg.github.io/vc-status-rl-2020/) in VADE. A revocation list is basically a remote anchored credential which holds a bit list where every credential gets a id assigned. This id is the index number in the bit list. If this bit is 0 in the credential, then the associated credential isn't revoked.
 
 This implies that for every credential which should be revoked, the owner of the revocation credential must update the according document.
@@ -122,8 +122,6 @@ To create a revocation registry we use the command `vc_zkp create_revocation_reg
 - method -> This is method where the DID is created (we use `did:evan` for now)
 - options -> With the options, we pass the private key for signing and the associated `evan` identity. To scope the schema we add `"type":"bbs"`
 - payload -> This contains the payload for the schema.
-
-
 
 ```bash
 payload='{"issuerDid":"did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6","issuerPublicKeyDid":"did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6#key-1","issuerProvingKey":"30d446cc76b19c6eacad89237d021eb2c85144b61d63cb852aee09179f460920"}'
@@ -220,7 +218,6 @@ After the Holder has generated the Credential Proposal request, the Issuer now  
 
 This step is on the issuer side of the flow. In this step he takes the proposal of the Holder and creates an credential offer based on the proposal.
 
-
 The command is `vc_zkp create_credential_proposal` and has the parameters `method`, `options` and `payload`
 
 - method -> This is method where the DID is created (we use `did:evan` for now)
@@ -245,7 +242,6 @@ The proposal json structure which defines the following properties:
 - issuer: This is the issuer DID of the future credential
 - credentialProposal: This is the proposal object received from the holder
 - nquadCount: This is the number of statements which are included in the proof
-
 
 example command:
 
@@ -274,11 +270,9 @@ the response now consists of a `nonce` which will be checked by the holder when 
 
 Now this offer is transferred to the Holder again and the holder will now create a credential request based on the offer
 
-
 ### Creating a credential request (Holder)
 
 This step is on the holder side of the flow. Now the holder is able to create a concrete credential request with the values he wants to have issued by the issuer
-
 
 The command is `vc_zkp create_credential_request` and has the parameters `method`, `options` and `payload`
 
@@ -342,7 +336,6 @@ The response of the credential request now contains a blindSignatureContext whic
 
 The second element in the returned array contains the signature blinding which is needed for finishing the credential signature returned by the issuer.
 
-
 ### Creating a credential (Issuer)
 
 When the Issuer now receives the credential request from the Holder, he is now able to issue/create a new credential for him. For that he needs the following parameters:
@@ -359,7 +352,6 @@ The command is `vc_zkp issue_credential` and has the parameters `method`, `optio
 - method -> This is method where the DID is created (we use `did:evan` for now)
 - options -> With the options we tell VADE to use the bbs module `"type":"bbs"`
 - payload -> This contains the payload for the credential request.
-
 
 ```bash
 payload='{"unsignedVc":{"@context":["https://www.w3.org/2018/credentials/v1","https://schema.org","https://w3id.org/vc-revocation-list-2020/v1"],"id":"uuid:any","type":["VerifiableCredential"],"issuer":"did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6","credentialSubject":{"id":"did:any:abc","data":{"test_property_string":"value"}},"credentialStatus":{"id":"did:evan:zkp:0x01e323d0f05c31f528d12e7a63702f70f9e076e7daa6933a630a3f6d1900c7f4#0","type":"RevocationList2020Status","revocationListIndex":"0","revocationListCredential":"did:evan:zkp:0x01e323d0f05c31f528d12e7a63702f70f9e076e7daa6933a630a3f6d1900c7f4"},"credentialSchema":{"id":"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda","type":"EvanZKPSchema"},"issuanceDate":"2021-10-06T05:48:29.906Z"},"issuerPublicKeyId":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906#key-1","issuerPublicKey":"jCv7l26izalfcsFe6j/IqtVlDolo2Y3lNld7xOG63GjSNHBVWrvZQe2O859q9JeVEV4yXtfYofGQSWrMVfgH5ySbuHpQj4fSgLu4xXyFgMidUO1sIe0NHRcXpOorP01o","issuerSecretKey":"Ilm14JX/ULRybFcHOq93gzDu5McYuX9L7AE052Sz5SQ=","credentialRequest":{"subject":"did:any:abc","schema":"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda","type":"EvanBbsCredentialRequest","blindSignatureContext":"jND/StzMpzMauGViwRAb9BYxMz4p/iPXNbiy5RSucHuVQHXQqGwt5JFlcVhMon3USb6sIIbQsXndWA7nUtt7E3I8iXph0+31I63Dc22PQ0WFbjuZgjIQk2k5GDmL6EbUFF1HVnC6LXTBLKQSCB4056ArUjBJFRtzgIN5iB/bQfgAAAACcwcp6M4616IBXQeLbgW55vbMFMYJMxlB21xmQbe3AI9MSEoHTJMUtrrytzctgOkJWtGmf3y8RU1XT0J4ryvRnA==","credentialValues":{"test_property_string":"value"}},"credentialOffer":{"issuer":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906","subject":"did:any:abc","type":"EvanBbsCredentialOffering","schema":"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda","nonce":"QqJR4o6joiApYVXX7JLbRIZBQ9QprlFpewo8GbojIKY=","credentialMessageCount":2},"requiredIndices":[],"nquads":["test_property_string:value"]}'
@@ -414,7 +406,6 @@ This command then returns the full credential with a BBS+ signature
 
 This credential is now sent back to the Holder who must finalize the credential with his signature blinding value
 
-
 ### Finishing a credential (Holder)
 
 When the holder receives his BBS+ credential he needs to verify if the signature is mapped for his received signature blinding
@@ -426,6 +417,7 @@ The command is `vc_zkp finish_credential` and has the parameters `method`, `opti
 - payload -> This contains the payload for the credential finishing.
 
 The payload must contain the following values
+
 - the credential itself
 - his mastersecret
 - the nquad array to verify if the signature matches
@@ -532,7 +524,6 @@ This command returns now the blinded signature credential which can be used for 
 }
 ```
 
-
 ### Creating a Proof request (Verifier)
 
 When now a Verifier wants to check that a Holder has a credential for a given schema and wants to have the value `test_property_string` revealed from the Holder, he must create a proof request and send it to the Holder:
@@ -585,7 +576,6 @@ This returns the proof request which can be presented to the Holder
     ]
 }
 ```
-
 
 ### Creating a Verifiable Presentation (Holder/Prover)
 
@@ -688,7 +678,6 @@ This object contains a lot of values. the explanation for them is the following:
 - proverPublicKeyDid -> This is the Key ID of the prover reference which key is used for creating the JWS
 - proverProvingKey -> THis is the private key of the prover to generate the JWS
 
-
 The command execution looks like the following
 
 ```bash
@@ -761,7 +750,6 @@ This would now return the verifiable presentation for the proof request and can 
     }
 }
 ```
-
 
 ### Verifying a Verifiable Presentation (Verifier)
 
@@ -859,7 +847,6 @@ The payload body looks like following
 }
 ```
 
-
 The payload for verifying a proof must contain the following values
 
 - presentation -> This is the received verifiable presentation of the Prover
@@ -870,7 +857,6 @@ The payload for verifying a proof must contain the following values
 
 The command execution looks like the following
 
-
 ```bash
 payload='{"presentation":{"@context":["https://www.w3.org/2018/credentials/v1","https://schema.org","https://w3id.org/vc-revocation-list-2020/v1"],"id":"2846708b-62ab-4c33-a7f6-a4c86a1779d6","type":["VerifiablePresentation"],"verifiableCredential":[{"@context":["https://www.w3.org/2018/credentials/v1","https://schema.org","https://w3id.org/vc-revocation-list-2020/v1"],"id":"uuid:any","type":["VerifiableCredential"],"issuer":"did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6","issuanceDate":"2022-01-12T16:35:18.000Z","credentialSubject":{"id":"did:any:abc","data":{"test_property_string":"value"}},"credentialSchema":{"id":"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda","type":"EvanZKPSchema"},"credentialStatus":{"id":"did:evan:zkp:0x01e323d0f05c31f528d12e7a63702f70f9e076e7daa6933a630a3f6d1900c7f4#0","type":"RevocationList2020Status","revocationListIndex":"0","revocationListCredential":"did:evan:zkp:0x01e323d0f05c31f528d12e7a63702f70f9e076e7daa6933a630a3f6d1900c7f4"},"proof":{"type":"BbsBlsSignatureProof2020","created":"2021-10-06T05:48:29.906Z","proofPurpose":"assertionMethod","credentialMessageCount":2,"verificationMethod":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906#key-1","nonce":"AXEWYjEP/lvOEqfV8lWiI6kSGMrYhJdBHmgnIUtg/SU=","proof":"AAABnJQQeSoGm8rZX4BzSPXXiRMiBelDLlpLPur21M8UskS9p4D0yvcriEhjh9Bx6z71bKVzj6nD9g8ONwPdvlNJh5MI6W2aS9my+f/l017mMrVm4gB+nwvGoqgroEZUKFR1xLTsYUxW5QfP+fpmC3saIGM2iK+flILQQc3N3FjMIThqu4AktZsO9OCVcmxPCOECoAAAAHSLUPz+xqwvkZTLuvSKsClT5l3zcWYzbkGt9N3eQ8XcEp4hZMpcsg40pt+fZvJE/g4AAAACajooc0isJbZkdcpAVL8DRhznFO8Y1r5d9UMnn/9uPq0dkDIfyOTXGNJgk/RhKBjE7fPLLc2UVmYYb5ZBhXr725PWoQ2x+6hxnYxqngFZdRMt4R4dFGj/taOLDXTyGOzcLhCymaO8tdYPdP2z5/yW0AAAAAMp6EF4sWLWquxR8k7ecuQjtokltX+RY7giGiUYGewmF2oySqThLTNGOarcfABDnRwOCvzBRuoZLtX7hLaHu0sZVRE4VIqZoZaqNJA+PQMsiVIAxuTxqCPUKTJcn6QbKrQAAAABAAAAAWY++z6yIqCtWrO+3NDS0eUa1vM1a4oC7+1WzLhkKBhl"}}],"proof":{"type":"EcdsaPublicKeySecp256k1","created":"2022-01-12T16:35:18.000Z","proofPurpose":"assertionMethod","verificationMethod":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906#key-1","jws":"eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NkstUiJ9.eyJpYXQiOiIyMDIyLTAxLTEyVDE2OjM1OjE4LjAwMFoiLCJkb2MiOnsiQGNvbnRleHQiOlsiaHR0cHM6Ly93d3cudzMub3JnLzIwMTgvY3JlZGVudGlhbHMvdjEiLCJodHRwczovL3NjaGVtYS5vcmciLCJodHRwczovL3czaWQub3JnL3ZjLXJldm9jYXRpb24tbGlzdC0yMDIwL3YxIl0sImlkIjoiMjg0NjcwOGItNjJhYi00YzMzLWE3ZjYtYTRjODZhMTc3OWQ2IiwidHlwZSI6WyJWZXJpZmlhYmxlUHJlc2VudGF0aW9uIl0sInZlcmlmaWFibGVDcmVkZW50aWFsIjpbeyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSIsImh0dHBzOi8vc2NoZW1hLm9yZyIsImh0dHBzOi8vdzNpZC5vcmcvdmMtcmV2b2NhdGlvbi1saXN0LTIwMjAvdjEiXSwiaWQiOiJ1dWlkOmFueSIsInR5cGUiOlsiVmVyaWZpYWJsZUNyZWRlbnRpYWwiXSwiaXNzdWVyIjoiZGlkOmV2YW46dGVzdGNvcmU6MHg2MjQwY2VkZmM4NDA1NzliN2ZkY2Q2ODZiZGM2NWE5YThjNDJkZWE2IiwiaXNzdWFuY2VEYXRlIjoiMjAyMi0wMS0xMlQxNjozNToxOC4wMDBaIiwiY3JlZGVudGlhbFN1YmplY3QiOnsiaWQiOiJkaWQ6YW55OmFiYyIsImRhdGEiOnsidGVzdF9wcm9wZXJ0eV9zdHJpbmciOiJ2YWx1ZSJ9fSwiY3JlZGVudGlhbFNjaGVtYSI6eyJpZCI6ImRpZDpldmFuOnprcDoweGQ2NDFjMjYxNjFlNzY5Y2VmNGI0MTc2MDIxMTk3MmIyNzRhOGYzN2YxMzVhMzQwODNlNGU0OGIzZjEwMzVlZGEiLCJ0eXBlIjoiRXZhblpLUFNjaGVtYSJ9LCJjcmVkZW50aWFsU3RhdHVzIjp7ImlkIjoiZGlkOmV2YW46emtwOjB4MDFlMzIzZDBmMDVjMzFmNTI4ZDEyZTdhNjM3MDJmNzBmOWUwNzZlN2RhYTY5MzNhNjMwYTNmNmQxOTAwYzdmNCMwIiwidHlwZSI6IlJldm9jYXRpb25MaXN0MjAyMFN0YXR1cyIsInJldm9jYXRpb25MaXN0SW5kZXgiOiIwIiwicmV2b2NhdGlvbkxpc3RDcmVkZW50aWFsIjoiZGlkOmV2YW46emtwOjB4MDFlMzIzZDBmMDVjMzFmNTI4ZDEyZTdhNjM3MDJmNzBmOWUwNzZlN2RhYTY5MzNhNjMwYTNmNmQxOTAwYzdmNCJ9LCJwcm9vZiI6eyJ0eXBlIjoiQmJzQmxzU2lnbmF0dXJlUHJvb2YyMDIwIiwiY3JlYXRlZCI6IjIwMjEtMTAtMDZUMDU6NDg6MjkuOTA2WiIsInByb29mUHVycG9zZSI6ImFzc2VydGlvbk1ldGhvZCIsImNyZWRlbnRpYWxNZXNzYWdlQ291bnQiOjIsInZlcmlmaWNhdGlvbk1ldGhvZCI6ImRpZDpldmFuOnRlc3Rjb3JlOjB4MGQ4NzIwNGMzOTU3ZDczYjY4YWUyOGQwYWY5NjFkM2M3MjQwMzkwNiNrZXktMSIsIm5vbmNlIjoiQVhFV1lqRVAvbHZPRXFmVjhsV2lJNmtTR01yWWhKZEJIbWduSVV0Zy9TVT0iLCJwcm9vZiI6IkFBQUJuSlFRZVNvR204clpYNEJ6U1BYWGlSTWlCZWxETGxwTFB1cjIxTThVc2tTOXA0RDB5dmNyaUVoamg5Qng2ejcxYktWemo2bkQ5ZzhPTndQZHZsTkpoNU1JNlcyYVM5bXkrZi9sMDE3bU1yVm00Z0Irbnd2R29xZ3JvRVpVS0ZSMXhMVHNZVXhXNVFmUCtmcG1DM3NhSUdNMmlLK2ZsSUxRUWMzTjNGak1JVGhxdTRBa3Rac085T0NWY214UENPRUNvQUFBQUhTTFVQeit4cXd2a1pUTHV2U0tzQ2xUNWwzemNXWXpia0d0OU4zZVE4WGNFcDRoWk1wY3NnNDBwdCtmWnZKRS9nNEFBQUFDYWpvb2MwaXNKYlprZGNwQVZMOERSaHpuRk84WTFyNWQ5VU1ubi85dVBxMGRrRElmeU9UWEdOSmdrL1JoS0JqRTdmUExMYzJVVm1ZWWI1WkJoWHI3MjVQV29RMngrNmh4bll4cW5nRlpkUk10NFI0ZEZHai90YU9MRFhUeUdPemNMaEN5bWFPOHRkWVBkUDJ6NS95VzBBQUFBQU1wNkVGNHNXTFdxdXhSOGs3ZWN1UWp0b2tsdFgrUlk3Z2lHaVVZR2V3bUYyb3lTcVRoTFROR09hcmNmQUJEblJ3T0N2ekJSdW9aTHRYN2hMYUh1MHNaVlJFNFZJcVpvWmFxTkpBK1BRTXNpVklBeHVUeHFDUFVLVEpjbjZRYktyUUFBQUFCQUFBQUFXWSsrejZ5SXFDdFdyTyszTkRTMGVVYTF2TTFhNG9DNysxV3pMaGtLQmhsIn19XX0sImlzcyI6ImRpZDpldmFuOnRlc3Rjb3JlOjB4NjI0MGNlZGZjODQwNTc5YjdmZGNkNjg2YmRjNjVhOWE4YzQyZGVhNiJ9.WDxsRdN1LpD3u9pVxj11KiLkBP_swA149XUUTWNoewsewsynPKlg0oEgtq5luzXRWuP1R6ExesbWdT3CZA1alwA"}},"proofRequest":{"verifier":"did:any:verifier","createdAt":"2022-01-12T16:19:20.000Z","nonce":"AXEWYjEP/lvOEqfV8lWiI6kSGMrYhJdBHmgnIUtg/SU=","type":"BBS","subProofRequests":[{"schema":"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda","revealedAttributes":[1]}]},"keysToSchemaMap":{"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda":"jCv7l26izalfcsFe6j/IqtVlDolo2Y3lNld7xOG63GjSNHBVWrvZQe2O859q9JeVEV4yXtfYofGQSWrMVfgH5ySbuHpQj4fSgLu4xXyFgMidUO1sIe0NHRcXpOorP01o"},"signerAddress":"0xd2787429c2a5d88662a8c4af690a4479e0199c5e","nquadsToSchemaMap":{"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda":["test_property_string:value"]}}'
 
@@ -880,7 +866,6 @@ option='{"type":"bbs"}'
 ```
 
 And it finally returns the result
-
 
 ```json
 {"presentedProof":"2846708b-62ab-4c33-a7f6-a4c86a1779d6","status":"verified"}

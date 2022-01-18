@@ -21,13 +21,13 @@ It implements the following [`VadePlugin`] functions:
 
 `vc_zkp_issue_credential`:
 
-- The passed payload will be an object of [`IssueCredentialPayload`], which contains [`UnsignedCredential`] to be signed. 
+- The passed payload will be an object of [`IssueCredentialPayload`], which contains [`UnsignedCredential`] to be signed.
 - The Options will be an object of [`SignerOptions`], which contains Private key to create Signature and type to indicate that request should be handled by jwt plugin only.
 - Output will be an object of [`Credential`].
 
 `vc_zkp_verify_proof`:
 
-- The passed payload will be an Object of [`VerifyProofPayload`], which contains [`Credential`] to be verifed. 
+- The passed payload will be an Object of [`VerifyProofPayload`], which contains [`Credential`] to be verifed.
 - The Options will be an object of `TypeOptions`, it has type paratmeter which should have value as "jwt" string constant.
 - Output will be an object of [`ProofVerification`].
 

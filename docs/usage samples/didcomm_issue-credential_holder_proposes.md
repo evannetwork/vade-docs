@@ -1,10 +1,10 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 ---
 
-# How plugins work together ?
+# How plugins work together?
 
-## Exchanging infomation and using protocols in VADE by combining plugins
+## Exchanging information and using protocols in VADE by combining plugins
 
 So far we have discussed how plugins work individually and cater to specific functions but in real scenarios plugins work together and perform various functionalities seamlessly, we will try to understand and demostrate it with the help of following flow:
 
@@ -17,7 +17,7 @@ So far we have discussed how plugins work individually and cater to specific fun
 
 Above scenario would be using [`vade-jwt-vc`] for JWT credential creation and signing, [`vade-didcomm`] for [`issue credential protocol`] and didcomm communication,[`vade-evan-cli`] for combining all plugins and using them seamlessly.
 
-![State digram](state.svg)
+![State diagram](assets/state.svg)
 
 ### Bob wants a credential issued from Alice
 
@@ -27,7 +27,7 @@ If Bob wants a credential issued from Alice , he would need to connect with Alic
 
 The initial communication as per [`issue credential protocol`] would involve following steps :-
 
-Note: Please checkout the documentation for [`didcomm_send`] and [`didcomm_receive`] to understand the `payload` and `options`. The `body` parameter in payload contains the structure required for [`issue credential protocol`] and state represents the current state of protocol as each protocol goes throuth various status before the communication is completed or terminated. [`issue credential protocol`] starts with proposal sending from Bob so the initial state is `SendProposeCredential`.
+Note: Please checkout the documentation for [`didcomm_send`] and [`didcomm_receive`] to understand the `payload` and `options`. The `body` parameter in payload contains the structure required for [`issue credential protocol`] and state represents the current state of protocol as each protocol goes through various status before the communication is completed or terminated. [`issue credential protocol`] starts with proposal sending from Bob so the initial state is `SendProposeCredential`.
 
 - Bob sends `propose-credential` request to Alice via [`vade-didcomm`].
 
@@ -40,8 +40,7 @@ option={
    "signingKeys":{
       "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
       "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 payload={
@@ -126,8 +125,7 @@ receiver_option={
    "signingKeys":{
       "signingMySecret":"27a98eb5846de97476c8a92f627602a4f75e0b0af78045f2883f9fad428bf76a",
       "signingOthersPublic":"ce341ea46fd1a80982a66c82b172faca7a088ab3da1ab8fd208100489f428c6b"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 message =  {
@@ -200,8 +198,7 @@ option={
    "signingKeys":{
       "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
       "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 payload={
@@ -250,8 +247,7 @@ receiver_option={
    "signingKeys":{
       "signingMySecret":"27a98eb5846de97476c8a92f627602a4f75e0b0af78045f2883f9fad428bf76a",
       "signingOthersPublic":"ce341ea46fd1a80982a66c82b172faca7a088ab3da1ab8fd208100489f428c6b"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 message =  {
@@ -368,8 +364,7 @@ option={
    "signingKeys":{
       "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
       "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 payload={
@@ -410,8 +405,7 @@ receiver_option={
    "signingKeys":{
       "signingMySecret":"27a98eb5846de97476c8a92f627602a4f75e0b0af78045f2883f9fad428bf76a",
       "signingOthersPublic":"ce341ea46fd1a80982a66c82b172faca7a088ab3da1ab8fd208100489f428c6b"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 message =  {
@@ -555,8 +549,7 @@ option={
    "signingKeys":{
       "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
       "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 payload={
@@ -597,8 +590,7 @@ receiver_option={
    "signingKeys":{
       "signingMySecret":"27a98eb5846de97476c8a92f627602a4f75e0b0af78045f2883f9fad428bf76a",
       "signingOthersPublic":"ce341ea46fd1a80982a66c82b172faca7a088ab3da1ab8fd208100489f428c6b"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 message =  {
@@ -707,8 +699,7 @@ option={
    "signingKeys":{
       "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
       "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 payload={
@@ -747,8 +738,7 @@ receiver_option={
    "signingKeys":{
       "signingMySecret":"27a98eb5846de97476c8a92f627602a4f75e0b0af78045f2883f9fad428bf76a",
       "signingOthersPublic":"ce341ea46fd1a80982a66c82b172faca7a088ab3da1ab8fd208100489f428c6b"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 message =  {

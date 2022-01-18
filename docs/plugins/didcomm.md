@@ -200,6 +200,7 @@ option={
    "skipProtocolHandling":false
 }
 ```
+
 ```sh
 ./vade_evan_cli didcomm send --options $option --payload $payload
 
@@ -343,7 +344,7 @@ receiver_option={
       "comment":"Hi"
    },
    "metadata":{
-      
+
    }
 }
 ```
@@ -392,6 +393,7 @@ option={
    "skipProtocolHandling":false
 }
 ```
+
 ```sh
 ./vade_evan_cli didcomm receive --options $option --payload $payload
 ```

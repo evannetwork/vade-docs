@@ -14,7 +14,7 @@ It implements the following [`VadePlugin`] functions:
 
 ## Usage
 
-- [`did-create`] requires following params to be passed 
+- [`did-create`] requires following params to be passed
 
 | Parameter  | Description |
 | ------------- | ------------- |
@@ -41,7 +41,7 @@ method="did:evan"
 "did:evan:0xd74434f146f3fba3fde8a6e4a0a522d2bf5b8b845fee0b493a01c78dd1b999e3"
 ```
 
-- [`did-update`]: requires following params to be passed 
+- [`did-update`]: requires following params to be passed
 
 | Parameter  | Description |
 | ------------- | ------------- |

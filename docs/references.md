@@ -14,7 +14,7 @@ async fn did_create(
         did_method: &str,
         options: &str,
         payload: &str,
-    ) -> Result<VadePluginResultValue<Option<String>>, Box<dyn Error>> 
+    ) -> Result<VadePluginResultValue<Option<String>>, Box<dyn Error>>
 ```
 
 | Argument  | Description |
@@ -46,7 +46,7 @@ async fn did_update(
 async fn did_resolve(
         &mut self,
         did_id: &str,
-    ) -> Result<VadePluginResultValue<Option<String>>, Box<dyn Error>> 
+    ) -> Result<VadePluginResultValue<Option<String>>, Box<dyn Error>>
 ```
 
 | Argument  | Description |
@@ -84,6 +84,7 @@ async fn didcomm_receive(
 | message  | the plain / encrypted didcomm message (should be of type [`BaseMessage`] / [`EncryptedMessage`])  |
 
 ### vc_zkp_verify_proof
+
 Verifies the proof sent in a verified credential
 
 ```sh
@@ -92,7 +93,7 @@ async fn vc_zkp_verify_proof(
         method: &str,
         options: &str,
         payload: &str,
-    ) -> Result<VadePluginResultValue<Option<String>>, Box<dyn Error>> 
+    ) -> Result<VadePluginResultValue<Option<String>>, Box<dyn Error>>
 ```
 
 | Argument  | Description |
@@ -102,6 +103,7 @@ async fn vc_zkp_verify_proof(
 | payload  | of type [`VerifyProofPayload`] |
 
 ### vc_zkp_issue_credential
+
 Issues a new credential. This requires an UnsignedCredential.
 
 ```sh
@@ -122,6 +124,7 @@ async fn vc_zkp_issue_credential(
 ## Types
 
 ### AssertionProof
+
 AssertionProof, typically used to ensure authenticity and integrity of a verifiable credential
 
 ```sh
@@ -133,6 +136,7 @@ pub struct AssertionProof {
     pub jws: String,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | r#type  | type (e.g: "EcdsaPublicKeySecp256k1")|
@@ -142,7 +146,9 @@ pub struct AssertionProof {
 | jws  | signature in jws format |
 
 ### BaseMessage
+
 Decrypted message format without dynamic body
+
 ```sh
 pub struct BaseMessage {
     pub from: Option<String>,
@@ -150,6 +156,7 @@ pub struct BaseMessage {
     pub to: Option<Vec<String>>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | from  | DID of sender |
@@ -157,6 +164,7 @@ pub struct BaseMessage {
 | to  | DID of receiver |
 
 ### CredentialStatus
+
 'credentialStatus' property of a verifiable credential containing revocation information.
 
 ```sh
@@ -167,6 +175,7 @@ pub struct CredentialStatus {
     pub revocation_list_credential: String,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | id  | id |
@@ -175,6 +184,7 @@ pub struct CredentialStatus {
 | revocation_list_credential  | list credential |
 
 ### CredentialSubject
+
 Payload/data part of a verifiable credential.
 
 ```sh
@@ -183,12 +193,14 @@ pub struct CredentialSubject {
     pub data: HashMap<String, String>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | id  | DID |
 | data  | key value pairs representing various properties to be signed |
 
 ### Credential
+
 A verifiable credential issued by an issuer
 
 ```sh
@@ -208,7 +220,7 @@ pub struct Credential {
 
 | Parameter  | Description |
 | ------------- | ------------- |
-| context  | context (e.g: https://www.w3.org/2018/credentials/v1)  |
+| context  | context (e.g: <https://www.w3.org/2018/credentials/v1>)  |
 | id  | unique id |
 | r#type  | type value(usually ["VerifiableCredential"])  |
 | issuer  | DID of Issuer |
@@ -219,8 +231,8 @@ pub struct Credential {
 | credential_status  | type of [`CredentialStatus`]  |
 | credential_status  | type of [`AssertionProof`]  |
 
-
 ### DidCommOptions
+
 Optional parameter that can be passed to vade DIDComm functions to enforce a specific encryption key
 
 ```sh
@@ -230,6 +242,7 @@ pub struct DidCommOptions {
     pub skip_protocol_handling: Option<bool>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | encryption_keys  | object of [`EncryptionKeys`] type which are optionally used to encrypt message  |
@@ -245,6 +258,7 @@ pub struct DidUpdateArguments {
     pub operation: String,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | private_key  | private key  |
@@ -252,6 +266,7 @@ pub struct DidUpdateArguments {
 | operation  | update operation  |
 
 ### EncryptionKeys
+
 Either a computed shared secret or a (local) private key plus a contacts public key
 
 ```sh
@@ -264,12 +279,14 @@ pub struct EncryptionKeys {
     pub encryption_others_public: Option<[u8; 32]>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | encryption_my_secret  | secret key  |
 | encryption_others_public  | public key |
 
 ### ExtendedMessage
+
 Decrypted message format without dynamic body
 
 ```sh
@@ -286,6 +303,7 @@ pub struct ExtendedMessage {
     pub other: HashMap<String, String>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | body  | optional key/value pairs to be passed as per the message being sent  |
@@ -307,6 +325,7 @@ pub struct IdentityArguments {
     pub identity: String,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | private_key  | private key  |
@@ -321,6 +340,7 @@ pub struct IssueCredentialPayload {
     pub issuer_public_key: String,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | unsigned_vc  | The VC to sign, without any appended proof  |
@@ -334,11 +354,13 @@ pub struct ProofVerification {
     pub verified: bool,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | verified  | true/false  |
 
 ### SigningKeys
+
 Either a computed shared secret or a (local) private key plus a contacts public key
 
 ```sh
@@ -353,6 +375,7 @@ pub struct SigningKeys {
     pub signing_others_public: Option<[u8; 32]>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | signing_my_secret  | secret key  |
@@ -367,6 +390,7 @@ pub struct SignerOptions {
     pub issuer_public_key: String,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | unsigned_vc  | The VC to sign, without any appended proof  |
@@ -374,6 +398,7 @@ pub struct SignerOptions {
 | issuer_public_key  | The public key of the issuer used to later verify the signature |
 
 ### UnsignedCredential
+
 An unsigned credential that has to be signed by Issuer
 
 ```sh
@@ -391,9 +416,10 @@ pub struct UnsignedCredential {
     pub credential_status: Option<CredentialStatus>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
-| context  | context (e.g: https://www.w3.org/2018/credentials/v1)  |
+| context  | context (e.g: <https://www.w3.org/2018/credentials/v1>)  |
 | id  | unique id |
 | r#type  | type value(usually ["VerifiableCredential"])  |
 | issuer  | DID of Issuer |
@@ -404,6 +430,7 @@ pub struct UnsignedCredential {
 | credential_status  | type of [`CredentialStatus`]  |
 
 ### VadeDidCommPluginOutput
+
 Output of didcomm_send or didcomm_receive
 
 ```sh
@@ -413,6 +440,7 @@ pub struct VadeDidCommPluginOutput<T, TRaw = serde_json::Value> {
     pub metadata: HashMap<String, String>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | message  | encrypted/plain object of Type which is sent or received   |
@@ -420,6 +448,7 @@ pub struct VadeDidCommPluginOutput<T, TRaw = serde_json::Value> {
 | metadata  | optional metadata (key/value pairs)   |
 
 ### VerifyProofPayload
+
 Payload for verifying a signed Credential.
 
 ```sh
@@ -432,6 +461,7 @@ pub struct VerifyProofPayload {
     pub revocation_list: Option<RevocationListCredential>,
 }
 ```
+
 | Parameter  | Description |
 | ------------- | ------------- |
 | credential  | type of [`Credential`]   |

@@ -10,8 +10,6 @@ The name "Vade" is an acronym for "VC and DID engine" and focuses on working wit
 
 This library is currently under development. Behavior, as well as provided exports, may change over time.
 
-
-
 ## Getting Started
 
 Get started by **creating a new site**.

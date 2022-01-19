@@ -2,7 +2,7 @@
 sidebar_position: 8
 ---
 
-# A User proposes a credential to an issuer
+# Propose Credential with DIDComm
 
 This example is similar to [A User requests a credential from an issuer] but here we start with the (future) holder of a credential **suggesting a proposal** to an issuer.
 

@@ -8,7 +8,7 @@ This example is similar to [A User requests a credential from an issuer] but her
 
 ## Exchanging information and using protocols in VADE by combining plugins
 
-So far we have discussed how plugins work individually and cater to specific functions but in real scenarios plugins work together and perform various functionalities seamlessly, we will try to understand and demostrate it with the help of following flow:
+So far we have discussed how plugins work individually and cater to specific functions but in real scenarios plugins work together and perform various functionalities seamlessly, we will try to understand and demonstrate it with the help of following flow:
 
 - Bob wants a credential issued from Alice
 - First of all they connect to each other via DIDcomm and Bob starts a Protocol “Issue Credential”

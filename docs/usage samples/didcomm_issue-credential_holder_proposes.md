@@ -2,7 +2,9 @@
 sidebar_position: 8
 ---
 
-# How plugins work together?
+# A User proposes a credential to an issuer
+
+This example is similar to [A User requests a credential from an issuer] but here we start with the (future) holder of a credential **suggesting a proposal** to an issuer.
 
 ## Exchanging information and using protocols in VADE by combining plugins
 
@@ -772,9 +774,10 @@ message =  {
 ./vade_evan_cli didcomm receive --options $receiver_option --payload $message
 ```
 
+[`didcomm_receive`]: /docs/references#didcomm_receive
+[`didcomm_send`]: /docs/references#didcomm_send
+[`issue credential protocol`]: https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential#preview-credential
 [`vade-didcomm`]: /docs/plugins/didcomm
 [`vade-jwt-vc`]: /docs/plugins/credentials/jwt
-[`issue credential protocol`]: https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential#preview-credential
 [`W3C Datamodel Example 1 Verifiable Credentials`]: https://www.w3.org/TR/vc-data-model/#example-1-a-simple-example-of-a-verifiable-credential
-[`didcomm_send`]: /docs/references#didcomm_send
-[`didcomm_receive`]: /docs/references#didcomm_receive
+[A User requests a credential from an issuer]: /vade-docs/docs/usage%20samples/didcomm_issue-credential_holder_request

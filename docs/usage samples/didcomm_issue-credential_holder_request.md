@@ -1,5 +1,6 @@
 ---
 sidebar_position: 7
+title: Request Credential with DIDComm
 ---
 
 # How plugins work together?
@@ -767,7 +768,7 @@ And gets the ack message:
 
 And can see from the `/body/status` in the `message` field, that the credential was acknowledged.
 
-[`did exchange protocol`]: /docs/plugins/docs/plugins/didcomm
+[`did exchange protocol`]: /docs/plugins/didcomm
 [`vade-didcomm`]: /docs/plugins/didcomm
 [`vade-evan-cli`]: /
 [`vade-jwt-vc`]: /docs/plugins/credentials/jwt

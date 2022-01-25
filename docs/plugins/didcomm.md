@@ -259,6 +259,10 @@ option={
 <TabItem value="vade_evan_cli" label="vade_evan_cli">
 
 ```sh
+payload={"type":"https://didcomm.org/present-proof/1.0/request-presentation","service_endpoint":"https://evan.network","from":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp","to":["did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG" ],"body":{"state":"PresentationRequested","presentation_attach":[{"type":"https://didcomm.org/present-proof/1.0/request-presentation","id":"1efc7eca99254891ba49ecfefe46c9b8","mime_type":"application/json","data":"YmFzZSA2NCBkYXRhIHN0cmluZw"}]},"thid":"1efc7eca99254891ba49ecfefe46c9b8"}
+
+option={"encryptionKeys":{"encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156","encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"}}
+
 ./vade_evan_cli didcomm send --options $option --payload $payload
 
 ```
@@ -304,6 +308,10 @@ payload={
 <TabItem value="vade_evan_cli" label="vade_evan_cli">
 
 ```sh
+option={"encryptionKeys":{"encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156","encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"}}
+
+payload={"type":"https://didcomm.org/trust_ping/1.0/ping","from":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp","to":["did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG"],"comment":"Hi"}
+
 ./vade_evan_cli didcomm send --options $option --payload $payload
 ```
 </TabItem>
@@ -370,6 +378,8 @@ receiver_option={
 <TabItem value="vade_evan_cli" label="vade_evan_cli">
 
 ```sh
+receiver_option={"encryptionKeys":{"encryptionMySecret":"f068e2f7ccc3eee220065e1dc937d34d548ec59be6488fea5ae1397e63f81c52","encryptionOthersPublic":"5bf55c73b82ebe22be80f3430667af570fae2556a6415e6b30d4065300aa947d"}}
+
 ./vade_evan_cli didcomm receive --options $receiver_option --payload $payload
 ```
 </TabItem>
@@ -440,6 +450,10 @@ payload={
 <TabItem value="vade_evan_cli" label="vade_evan_cli">
 
 ```sh
+option={"encryptionKeys":{"encryptionMySecret":"f068e2f7ccc3eee220065e1dc937d34d548ec59be6488fea5ae1397e63f81c52","encryptionOthersPublic":"5bf55c73b82ebe22be80f3430667af570fae2556a6415e6b30d4065300aa947d"}}
+
+payload={"type":"https://didcomm.org/trust_ping/1.0/ping_response","from":"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG","to":["did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp"],"comment":"hello,there?"}
+
 ./vade_evan_cli didcomm send --options $option --payload $payload
 ```
 
@@ -463,6 +477,8 @@ option={
 <TabItem value="vade_evan_cli" label="vade_evan_cli">
 
 ```sh
+option={"encryptionKeys":{"encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156","encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"}}
+
 ./vade_evan_cli didcomm receive --options $option --payload $payload
 ```
 

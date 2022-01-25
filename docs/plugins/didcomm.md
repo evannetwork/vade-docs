@@ -4,7 +4,7 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# DIDcomm
+# DIDComm
 
 DIDcomm plugin implementation is compliant to [DIDComm V2](https://identity.foundation/didcomm-messaging/spec/),
 
@@ -160,9 +160,9 @@ The two functions [`didcomm_send`] and [`didcomm_receive`] can be called with tw
 
 The data that is represented in `message` and `metadata` is protocol specific. The message is also attached unencrypted as `messageRaw`.
 
-## Generating keys for didcomm communication
+## Generating keys for DIDComm communication
 
-As mentioned above DIDCOMM exchange requires the encryption keys to be passed as [`didcommoptions`], to generate those keys the  `create-keys` subcommand can be used in `vade-evan-cli` for `didcomm` to generate keys for sender and receiver both, once the `sender` and `receiver` keys are generated, they can use those keys to create [`didcommoptions`] for [`didcomm_send`] and [`didcomm_receive`].
+As mentioned above DIDComm exchange requires the encryption keys to be passed as [`DidCommOptions`], to generate those keys the  `create-keys` subcommand can be used in `vade-evan-cli` for `didcomm` to generate keys for sender and receiver both, once the `sender` and `receiver` keys are generated, they can use those keys to create [`DidCommOptions`] for [`didcomm_send`] and [`didcomm_receive`].
 
 Note: Encryption keys are X25519 keys
 

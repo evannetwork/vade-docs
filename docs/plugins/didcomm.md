@@ -471,7 +471,7 @@ option={
 
 ## General message types
 
-In some protocols there are extra messages need to be sent to indicate error or successful message exchange to end the session, these messages have following structures:-
+In some protocols there are extra messages need to be sent to indicate error or successful message exchange to end the session, these messages have following structures:
 
 ### ack - Acknowledgement of succesfull messagge exchange
 

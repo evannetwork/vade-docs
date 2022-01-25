@@ -34,7 +34,7 @@ _NOTE_: When you send any message that will be encrypted, you need to have a fin
 
 The two functions [`didcomm_send`] and [`didcomm_receive`] can be called with two parameters, `options` and `payload`, the output is an Object of [`VadeDidCommPluginOutput`]:
 
-- Options: [`DidCommOptions`] object,Contains specific information for passing special configuration to the vade_didcomm. Currently its just used to inject specific encryption configuration, to overwrite the default DIDComm DID exchange key encryption.
+- Options: [`DidCommOptions`] object, Contains specific information for passing special configuration to the vade_didcomm. Currently its just used to inject specific encryption configuration, to overwrite the default DIDComm DID exchange key encryption.
 
 ```json
 {

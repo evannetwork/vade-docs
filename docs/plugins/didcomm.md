@@ -1,8 +1,10 @@
 ---
 sidebar_position: 3
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-# DIDcomm
+# DIDComm
 
 DIDcomm plugin implementation is compliant to [DIDComm V2](https://identity.foundation/didcomm-messaging/spec/),
 
@@ -32,17 +34,13 @@ _NOTE_: When you send any message that will be encrypted, you need to have a fin
 
 The two functions [`didcomm_send`] and [`didcomm_receive`] can be called with two parameters, `options` and `payload`, the output is an Object of [`VadeDidCommPluginOutput`]:
 
-- Options: [`DidCommOptions`] object,Contains specific information for passing special configuration to the vade_didcomm. Currently its just used to inject specific encryption configuration, to overwrite the default DIDComm DID exchange key encryption and signing.
+- Options: [`DidCommOptions`] object, Contains specific information for passing special configuration to the vade_didcomm. Currently its just used to inject specific encryption configuration, to overwrite the default DIDComm DID exchange key encryption.
 
 ```json
 {
   "encryptionKeys": {
     "encryptionMySecret": "<Either a computed shared secret or a (local) private key>",
     "encryptionOthersPublic": "<Public key>"
-  },
-  "signingKeys": {
-    "signingMySecret": "<Either a computed shared secret or a (local) private key>",
-    "signingOthersPublic": "<Public key>"
   }
 }
 ```
@@ -162,9 +160,70 @@ The two functions [`didcomm_send`] and [`didcomm_receive`] can be called with tw
 
 The data that is represented in `message` and `metadata` is protocol specific. The message is also attached unencrypted as `messageRaw`.
 
+## Generating keys for DIDComm communication
+
+As mentioned above DIDComm exchange requires the encryption keys to be passed as [`DidCommOptions`], to generate those keys the  `create-keys` subcommand can be used in `vade-evan-cli` for `didcomm` to generate keys for sender and receiver both, once the `sender` and `receiver` keys are generated, they can use those keys to create [`DidCommOptions`] for [`didcomm_send`] and [`didcomm_receive`].
+
+Note: Encryption keys are X25519 keys
+
+<Tabs groupId="vade_input">
+<TabItem value="vade_evan_cli" label="vade_evan_cli command">
+
+```sh
+./vade_evan_cli didcomm create_keys
+```
+
+</TabItem>
+<TabItem value="sender_keys" label="Sender Keys">
+
+```json
+{
+   "secret":"88a3c91682ceb57a20677502ad2fbaf5e9be57c38ef1e3c6c5b403fc90a7e07c",
+   "public":"d00bf764a187ea092b270277c24858653341559c31463ef576220b76412c2167"
+}
+```
+
+</TabItem>
+<TabItem value="receiver_keys" label="Receiver Keys">
+
+```json
+{
+   "secret":"a0717fc5ae410ee0ea9aa2bc87639339efc582d728a2390a6640c6dec71baf69",
+   "public":"cec307d4c3a47244491c6c52f2e7b740cbf02c53689bfefb5813e4f4e7fe8413"
+}
+```
+</TabItem>
+<TabItem value="sender_options" label="Sender options">
+
+```json
+{
+  "encryptionKeys":{
+    "encryptionMySecret":"88a3c91682ceb57a20677502ad2fbaf5e9be57c38ef1e3c6c5b403fc90a7e07c",
+    "encryptionOthersPublic":"cec307d4c3a47244491c6c52f2e7b740cbf02c53689bfefb5813e4f4e7fe8413"
+  }
+}
+```
+</TabItem>
+<TabItem value="receiver_options" label="Receiver options">
+
+```json
+{
+  "encryptionKeys":{
+    "encryptionMySecret":"a0717fc5ae410ee0ea9aa2bc87639339efc582d728a2390a6640c6dec71baf69",
+    "encryptionOthersPublic":"d00bf764a187ea092b270277c24858653341559c31463ef576220b76412c2167"
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Sending a message from Sender to Receiver
 
 For some specific protocol if you want to send a message from sender DID to receiver DID, the option and payload would look like following:
+
+<Tabs groupId="vade_input">
+<TabItem value="json_args" label="JSON args">
 
 ```json
 payload={
@@ -192,19 +251,23 @@ option={
    "encryptionKeys":{
       "encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156",
       "encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"
-   },
-   "signingKeys":{
-      "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
-      "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 ```
 
+</TabItem>
+<TabItem value="vade_evan_cli" label="vade_evan_cli">
+
 ```sh
+payload={"type":"https://didcomm.org/present-proof/1.0/request-presentation","service_endpoint":"https://evan.network","from":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp","to":["did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG" ],"body":{"state":"PresentationRequested","presentation_attach":[{"type":"https://didcomm.org/present-proof/1.0/request-presentation","id":"1efc7eca99254891ba49ecfefe46c9b8","mime_type":"application/json","data":"YmFzZSA2NCBkYXRhIHN0cmluZw"}]},"thid":"1efc7eca99254891ba49ecfefe46c9b8"}
+
+option={"encryptionKeys":{"encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156","encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"}}
+
 ./vade_evan_cli didcomm send --options $option --payload $payload
 
 ```
+</TabItem>
+</Tabs>
 
 The above example demonstrates sending `request-presentation` message for [`Present Proof Protocol`].
 
@@ -221,17 +284,15 @@ Lets try to send and receive ping messages with vade-evan cli example
 
 ### Send ping request
 
+<Tabs groupId="vade_input">
+<TabItem value="json_args" label="JSON args">
+
 ```json
 option={
    "encryptionKeys":{
       "encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156",
       "encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"
-   },
-   "signingKeys":{
-      "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
-      "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 payload={
@@ -243,10 +304,18 @@ payload={
    "comment":"Hi"
 }
 ```
+</TabItem>
+<TabItem value="vade_evan_cli" label="vade_evan_cli">
 
 ```sh
+option={"encryptionKeys":{"encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156","encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"}}
+
+payload={"type":"https://didcomm.org/trust_ping/1.0/ping","from":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp","to":["did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG"],"comment":"Hi"}
+
 ./vade_evan_cli didcomm send --options $option --payload $payload
 ```
+</TabItem>
+</Tabs>
 
 - Output of send
 
@@ -293,23 +362,28 @@ payload={
 
 ### Receive ping
 
+<Tabs groupId="vade_input">
+<TabItem value="json_args" label="JSON args">
+
 ```json
 receiver_option={
    "encryptionKeys":{
       "encryptionMySecret":"f068e2f7ccc3eee220065e1dc937d34d548ec59be6488fea5ae1397e63f81c52",
       "encryptionOthersPublic":"5bf55c73b82ebe22be80f3430667af570fae2556a6415e6b30d4065300aa947d"
-   },
-   "signingKeys":{
-      "signingMySecret":"27a98eb5846de97476c8a92f627602a4f75e0b0af78045f2883f9fad428bf76a",
-      "signingOthersPublic":"ce341ea46fd1a80982a66c82b172faca7a088ab3da1ab8fd208100489f428c6b"
-   },
-   "skipProtocolHandling":false
+   }
 }
 ```
 
+</TabItem>
+<TabItem value="vade_evan_cli" label="vade_evan_cli">
+
 ```sh
+receiver_option={"encryptionKeys":{"encryptionMySecret":"f068e2f7ccc3eee220065e1dc937d34d548ec59be6488fea5ae1397e63f81c52","encryptionOthersPublic":"5bf55c73b82ebe22be80f3430667af570fae2556a6415e6b30d4065300aa947d"}}
+
 ./vade_evan_cli didcomm receive --options $receiver_option --payload $payload
 ```
+</TabItem>
+</Tabs>
 
 - Output of receive
 
@@ -351,17 +425,15 @@ receiver_option={
 
 ### Send ping response
 
+<Tabs groupId="vade_input">
+<TabItem value="json_args" label="JSON args">
+
 ```json
 option={
    "encryptionKeys":{
       "encryptionMySecret":"f068e2f7ccc3eee220065e1dc937d34d548ec59be6488fea5ae1397e63f81c52",
       "encryptionOthersPublic":"5bf55c73b82ebe22be80f3430667af570fae2556a6415e6b30d4065300aa947d"
-   },
-   "signingKeys":{
-      "signingMySecret":"27a98eb5846de97476c8a92f627602a4f75e0b0af78045f2883f9fad428bf76a",
-      "signingOthersPublic":"ce341ea46fd1a80982a66c82b172faca7a088ab3da1ab8fd208100489f428c6b"
-   },
-   "skipProtocolHandling":false
+   }
 }
 
 payload={
@@ -374,33 +446,48 @@ payload={
 }
 ```
 
+</TabItem>
+<TabItem value="vade_evan_cli" label="vade_evan_cli">
+
 ```sh
+option={"encryptionKeys":{"encryptionMySecret":"f068e2f7ccc3eee220065e1dc937d34d548ec59be6488fea5ae1397e63f81c52","encryptionOthersPublic":"5bf55c73b82ebe22be80f3430667af570fae2556a6415e6b30d4065300aa947d"}}
+
+payload={"type":"https://didcomm.org/trust_ping/1.0/ping_response","from":"did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG","to":["did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp"],"comment":"hello,there?"}
+
 ./vade_evan_cli didcomm send --options $option --payload $payload
 ```
 
+</TabItem>
+</Tabs>
+
 ### Receive ping response
+
+<Tabs groupId="vade_input">
+<TabItem value="json_args" label="JSON args">
 
 ```json
 option={
    "encryptionKeys":{
       "encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156",
       "encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"
-   },
-   "signingKeys":{
-      "signingMySecret":"0eef2b066f5ceff7305db222f934e4bff8cc93dfdcc366ec6670287d4c71a4a3",
-      "signingOthersPublic":"653c161434879919469c6dd43cf1d561d4facf8fdcbd926789d0dc9f260bd33c"
-   },
-   "skipProtocolHandling":false
+   }
 }
 ```
+</TabItem>
+<TabItem value="vade_evan_cli" label="vade_evan_cli">
 
 ```sh
+option={"encryptionKeys":{"encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156","encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"}}
+
 ./vade_evan_cli didcomm receive --options $option --payload $payload
 ```
 
+</TabItem>
+</Tabs>
+
 ## General message types
 
-In some protocols there are extra messages need to be sent to indicate error or successful message exchange to end the session, these messages have following structures:-
+In some protocols there are extra messages need to be sent to indicate error or successful message exchange to end the session, these messages have following structures:
 
 ### ack - Acknowledgement of succesfull messagge exchange
 

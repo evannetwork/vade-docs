@@ -249,6 +249,8 @@ pub struct DidCommOptions {
 | signing_keys  | object of [`SigningKeys`] type which are optionally used to sign message |
 | skip_protocol_handling  | optional boolean parameter true/false   |
 
+Please check [`generating keys`] section to generate encryption keys for DIDCOMM exchange.
+
 ### DidUpdateArguments
 
 ```sh
@@ -489,3 +491,4 @@ pub struct VerifyProofPayload {
 [`SignerOptions`]: /docs/references#signeroptions
 [`VerifyProofPayload`]: /docs/references#verifyproofpayload
 [`ProofVerification`]: /docs/references#proofverification
+[`generating keys`]: /docs/plugins/didcomm#generating-keys-for-didcomm-communication

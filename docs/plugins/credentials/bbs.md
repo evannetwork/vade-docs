@@ -280,15 +280,15 @@ The command is `vc_zkp create_credential_request` and has the parameters `method
 - options -> With the options we tell VADE to use the bbs module `"type":"bbs"`
 - payload -> This contains the payload for the credential request.
 
-The proposal json structure which defines the following properties:
+The request json structure which defines the following properties:
 
 ```json
 {
     "credentialOffering": {
-        "issuer": "did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6",
+        "issuer": "did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906",
         "subject": "did:any:abc",
         "type": "EvanBbsCredentialOffering",
-        "schema": "did:evan:zkp:0x03d57c17c1202a0c859bc45afb0b102bcfe73ba51be137095fd3d70c91b68e03",
+        "schema": "did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6",
         "nonce": "QqJR4o6joiApYVXX7JLbRIZBQ9QprlFpewo8GbojIKY=",
         "credentialMessageCount": 2
     },
@@ -296,7 +296,31 @@ The proposal json structure which defines the following properties:
     "credentialValues": {
         "test_property_string": "value"
     },
-    "issuerPubKey": "jCv7l26izalfcsFe6j/IqtVlDolo2Y3lNld7xOG63GjSNHBVWrvZQe2O859q9JeVEV4yXtfYofGQSWrMVfgH5ySbuHpQj4fSgLu4xXyFgMidUO1sIe0NHRcXpOorP01o"
+    "issuerPubKey": "jCv7l26izalfcsFe6j/IqtVlDolo2Y3lNld7xOG63GjSNHBVWrvZQe2O859q9JeVEV4yXtfYofGQSWrMVfgH5ySbuHpQj4fSgLu4xXyFgMidUO1sIe0NHRcXpOorP01o",
+    "credentialSchema": {
+        "id": "did:evan:zkp:0x03d57c17c1202a0c859bc45afb0b102bcfe73ba51be137095fd3d70c91b68e03",
+        "type": "EvanVCSchema",
+        "name": "test_schema",
+        "author": "did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6",
+        "createdAt": "2021-11-05T08:01:00.000Z",
+        "description": "Test description",
+        "properties": {
+            "test_property_string": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "test_property_string"
+        ],
+        "additionalProperties": false,
+        "proof": {
+            "type": "EcdsaPublicKeySecp256k1",
+            "created": "2021-11-05T08:01:00.000Z",
+            "proofPurpose": "assertionMethod",
+            "verificationMethod": "did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6#key-1",
+            "jws": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NkstUiJ9.eyJpYXQiOiIyMDIxLTExLTA1VDA4OjAxOjAwLjAwMFoiLCJkb2MiOnsiaWQiOiJkaWQ6ZXZhbjp6a3A6MHgwM2Q1N2MxN2MxMjAyYTBjODU5YmM0NWFmYjBiMTAyYmNmZTczYmE1MWJlMTM3MDk1ZmQzZDcwYzkxYjY4ZTAzIiwidHlwZSI6IkV2YW5WQ1NjaGVtYSIsIm5hbWUiOiJ0ZXN0X3NjaGVtYSIsImF1dGhvciI6ImRpZDpldmFuOnRlc3Rjb3JlOjB4NjI0MGNlZGZjODQwNTc5YjdmZGNkNjg2YmRjNjVhOWE4YzQyZGVhNiIsImNyZWF0ZWRBdCI6IjIwMjEtMTEtMDVUMDg6MDE6MDAuMDAwWiIsImRlc2NyaXB0aW9uIjoiVGVzdCBkZXNjcmlwdGlvbiIsInByb3BlcnRpZXMiOnsidGVzdF9wcm9wZXJ0eV9zdHJpbmciOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsidGVzdF9wcm9wZXJ0eV9zdHJpbmciXSwiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlfSwiaXNzIjoiZGlkOmV2YW46dGVzdGNvcmU6MHg2MjQwY2VkZmM4NDA1NzliN2ZkY2Q2ODZiZGM2NWE5YThjNDJkZWE2In0.y5t411efca94-QrSrduiO4fzrMFDvfCLx77etZGNak4rGXr_yoNhU2EwCDIiX0e_kryFxv6YrB85gGnTXa3R_gA"
+        }
+    }
 }
 ```
 
@@ -304,15 +328,16 @@ The proposal json structure which defines the following properties:
 - masterSecret: This is the master secret of the holder
 - credentialValues: These are the values that the holder wants to get issued as a credential
 - issuerPubKey: This is the public key of type Bls12381G2Key2020 from the issuers did document
+- credentialSchema: This is the full json of the schema which has to be used for the credential creation
 
 example command:
 
 ```bash
-payload='{"credentialOffering":{"issuer":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906","subject":"did:any:abc","type":"EvanBbsCredentialOffering","schema":"did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda","nonce":"QqJR4o6joiApYVXX7JLbRIZBQ9QprlFpewo8GbojIKY=","credentialMessageCount":2},"masterSecret":"OASkVMA8q6b3qJuabvgaN9K1mKoqptCv4SCNvRmnWuI=","credentialValues":{"test_property_string":"value"},"issuerPubKey":"jCv7l26izalfcsFe6j/IqtVlDolo2Y3lNld7xOG63GjSNHBVWrvZQe2O859q9JeVEV4yXtfYofGQSWrMVfgH5ySbuHpQj4fSgLu4xXyFgMidUO1sIe0NHRcXpOorP01o"}'
+payload='{"credentialOffering":{"issuer":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906","subject":"did:any:abc","type":"EvanBbsCredentialOffering","schema":"did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6","nonce":"QqJR4o6joiApYVXX7JLbRIZBQ9QprlFpewo8GbojIKY=","credentialMessageCount":2},"masterSecret":"OASkVMA8q6b3qJuabvgaN9K1mKoqptCv4SCNvRmnWuI=","credentialValues":{"test_property_string":"value"},"issuerPubKey":"jCv7l26izalfcsFe6j/IqtVlDolo2Y3lNld7xOG63GjSNHBVWrvZQe2O859q9JeVEV4yXtfYofGQSWrMVfgH5ySbuHpQj4fSgLu4xXyFgMidUO1sIe0NHRcXpOorP01o","credentialSchema":{"id":"did:evan:zkp:0x03d57c17c1202a0c859bc45afb0b102bcfe73ba51be137095fd3d70c91b68e03","type":"EvanVCSchema","name":"test_schema","author":"did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6","createdAt":"2021-11-05T08:01:00.000Z","description":"Test description","properties":{"test_property_string":{"type":"string"}},"required":["test_property_string"],"additionalProperties":false,"proof":{"type":"EcdsaPublicKeySecp256k1","created":"2021-11-05T08:01:00.000Z","proofPurpose":"assertionMethod","verificationMethod":"did:evan:testcore:0x6240cedfc840579b7fdcd686bdc65a9a8c42dea6#key-1","jws":"eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NkstUiJ9.eyJpYXQiOiIyMDIxLTExLTA1VDA4OjAxOjAwLjAwMFoiLCJkb2MiOnsiaWQiOiJkaWQ6ZXZhbjp6a3A6MHgwM2Q1N2MxN2MxMjAyYTBjODU5YmM0NWFmYjBiMTAyYmNmZTczYmE1MWJlMTM3MDk1ZmQzZDcwYzkxYjY4ZTAzIiwidHlwZSI6IkV2YW5WQ1NjaGVtYSIsIm5hbWUiOiJ0ZXN0X3NjaGVtYSIsImF1dGhvciI6ImRpZDpldmFuOnRlc3Rjb3JlOjB4NjI0MGNlZGZjODQwNTc5YjdmZGNkNjg2YmRjNjVhOWE4YzQyZGVhNiIsImNyZWF0ZWRBdCI6IjIwMjEtMTEtMDVUMDg6MDE6MDAuMDAwWiIsImRlc2NyaXB0aW9uIjoiVGVzdCBkZXNjcmlwdGlvbiIsInByb3BlcnRpZXMiOnsidGVzdF9wcm9wZXJ0eV9zdHJpbmciOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsidGVzdF9wcm9wZXJ0eV9zdHJpbmciXSwiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlfSwiaXNzIjoiZGlkOmV2YW46dGVzdGNvcmU6MHg2MjQwY2VkZmM4NDA1NzliN2ZkY2Q2ODZiZGM2NWE5YThjNDJkZWE2In0.y5t411efca94-QrSrduiO4fzrMFDvfCLx77etZGNak4rGXr_yoNhU2EwCDIiX0e_kryFxv6YrB85gGnTXa3R_gA"}}}'
 
 option='{"type":"bbs"}'
 
-./vade_evan_cli_linux vc_zkp request_credential --method "did:evan" --options $option --payload $payload
+./vade_evan_cli vc_zkp request_credential --method "did:evan" --options $option --payload $payload
 ```
 
 example response:
@@ -321,14 +346,14 @@ example response:
 [
     {
         "subject": "did:any:abc",
-        "schema": "did:evan:zkp:0xd641c26161e769cef4b41760211972b274a8f37f135a34083e4e48b3f1035eda",
+        "schema": "did:evan:zkp:0x03d57c17c1202a0c859bc45afb0b102bcfe73ba51be137095fd3d70c91b68e03",
         "type": "EvanBbsCredentialRequest",
-        "blindSignatureContext": "jND/StzMpzMauGViwRAb9BYxMz4p/iPXNbiy5RSucHuVQHXQqGwt5JFlcVhMon3USb6sIIbQsXndWA7nUtt7E3I8iXph0+31I63Dc22PQ0WFbjuZgjIQk2k5GDmL6EbUFF1HVnC6LXTBLKQSCB4056ArUjBJFRtzgIN5iB/bQfgAAAACcwcp6M4616IBXQeLbgW55vbMFMYJMxlB21xmQbe3AI9MSEoHTJMUtrrytzctgOkJWtGmf3y8RU1XT0J4ryvRnA==",
+        "blindSignatureContext": "ikIGW12mSBoVLD3EDx6A6Us93Fbi7KKf7cZI9a8B5kizZQjGeh4W41eCsiIuQuC2Pg0E9Iusfwvp71RgNCDn3DVzDAh/svMn3AW6vq+2BYiOIaambOPcCTIhNjKpm3woPTbyBXSL+h9JNFd5gQh4bD6yevw1x+YJeO6qp5OuOU4AAAACKsGp9pz0QvjysTWgBMEY/F9cPBAFi53A7j1X+TXy20hj5uSjS7dxYxJnqbY/gotzZ32kq6x0PhTvSqXtV9oqKA==",
         "credentialValues": {
             "test_property_string": "value"
         }
     },
-    "JefdIPUgvAHDGdXVtSYM9ER6TJCtut77jBKg6MnwX9o="
+    "ZPqH9BMhwjbbXM3qm+rzx1Ty/qcGLshD6LsdEJod9Xc="
 ]
 ````
 
@@ -358,7 +383,7 @@ payload='{"unsignedVc":{"@context":["https://www.w3.org/2018/credentials/v1","ht
 
 option='{"type":"bbs"}'
 
-./vade_evan_cli_linux vc_zkp issue_credential --method "did:evan" --options $option --payload $payload
+./vade_evan_cli vc_zkp issue_credential --method "did:evan" --options $option --payload $payload
 ```
 
 This command then returns the full credential with a BBS+ signature
@@ -478,7 +503,7 @@ payload='{"credential":{"@context":["https://www.w3.org/2018/credentials/v1","ht
 
 option='{"type":"bbs"}'
 
-./vade_evan_cli_linux vc_zkp finish_credential --method "did:evan" --options $option --payload $payload
+./vade_evan_cli vc_zkp finish_credential --method "did:evan" --options $option --payload $payload
 ```
 
 This command returns now the blinded signature credential which can be used for creating presentations of it with zero knowledge proofs
@@ -862,7 +887,7 @@ payload='{"presentation":{"@context":["https://www.w3.org/2018/credentials/v1","
 
 option='{"type":"bbs"}'
 
-./vade_evan_cli_linux vc_zkp verify_proof --method "did:evan" --options $option --payload $payload
+./vade_evan_cli vc_zkp verify_proof --method "did:evan" --options $option --payload $payload
 ```
 
 And it finally returns the result

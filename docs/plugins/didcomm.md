@@ -148,13 +148,24 @@ The two functions [`didcomm_send`] and [`didcomm_receive`] can be called with tw
 }
 ```
 
-- Output: [`VadeDidCommPluginOutput`] object, The result of both functions will have the same structure and will always return a stringified json, with the following pattern:
+- Output: [`VadeDidCommPluginOutput`] object, The result of both functions will always return a stringified json with almost same structure, only difference is that `didcomm_receive` doesn't return `messageRaw` property, the return has following pattern:
+
+#### didcomm_send
 
 ```json
 {
-  "message": {<Encrypted message `Jwe` for didcomm_send or Decrypted message for didcomm_receive>},
-  "messageRaw": {<Unencrypted raw message>},
-  "metadata": {<Metadata associated with message, it's protocol specific and optional>}
+  "message": {},
+  "messageRaw": {},
+  "metadata": {}
+}
+```
+
+#### didcomm_receive
+
+```json
+{
+  "message": {},
+  "metadata": {}
 }
 ```
 
@@ -390,20 +401,6 @@ receiver_option={"encryptionKeys":{"encryptionMySecret":"f068e2f7ccc3eee220065e1
 ```json
 {
    "message":{
-      "body":null,
-      "created_time":1637054158,
-      "expires_time":null,
-      "from":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
-      "id":"5bbb0be3-accb-4dba-bb9f-9122ededb45a",
-      "pthid":null,
-      "type":"https://didcomm.org/trust_ping/1.0/ping",
-      "thid":null,
-      "to":[
-         "did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG"
-      ],
-      "comment":"Hi"
-   },
-   "messageRaw":{
       "body":null,
       "created_time":1637054158,
       "expires_time":null,

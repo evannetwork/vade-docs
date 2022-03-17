@@ -492,3 +492,4 @@ pub struct VerifyProofPayload {
 [`VerifyProofPayload`]: /docs/references#verifyproofpayload
 [`ProofVerification`]: /docs/references#proofverification
 [`generating keys`]: /docs/plugins/didcomm#generating-keys-for-didcomm-communication
+[`query_didcomm_messages`]: /docs/plugins/didcomm#query-stored-didcomm-messages-by-thid-and-msg-id

@@ -148,13 +148,24 @@ The two functions [`didcomm_send`] and [`didcomm_receive`] can be called with tw
 }
 ```
 
-- Output: [`VadeDidCommPluginOutput`] object, The result of both functions will have the same structure and will always return a stringified json, with the following pattern:
+- Output: [`VadeDidCommPluginOutput`] object, The result of both functions will always return a stringified json with almost same structure, only difference is that `didcomm_receive` doesn't return `messageRaw` property, the return has following pattern:
+
+#### didcomm_send
 
 ```json
 {
-  "message": {<Encrypted message `Jwe` for didcomm_send or Decrypted message for didcomm_receive>},
-  "messageRaw": {<Unencrypted raw message>},
-  "metadata": {<Metadata associated with message, it's protocol specific and optional>}
+  "message": {},
+  "messageRaw": {},
+  "metadata": {}
+}
+```
+
+#### didcomm_receive
+
+```json
+{
+  "message": {},
+  "metadata": {}
 }
 ```
 
@@ -162,7 +173,7 @@ The data that is represented in `message` and `metadata` is protocol specific. T
 
 ## Generating keys for DIDComm communication
 
-As mentioned above DIDComm exchange requires the encryption keys to be passed as [`DidCommOptions`], to generate those keys the  `create-keys` subcommand can be used in `vade-evan-cli` for `didcomm` to generate keys for sender and receiver both, once the `sender` and `receiver` keys are generated, they can use those keys to create [`DidCommOptions`] for [`didcomm_send`] and [`didcomm_receive`].
+As mentioned above DIDComm exchange requires the encryption keys to be passed as [`DidCommOptions`], to generate those keys the  [`create-keys`] subcommand can be used in `vade-evan-cli` for `didcomm` to generate keys for sender and receiver both, once the `sender` and `receiver` keys are generated, they can use those keys to create [`DidCommOptions`] for [`didcomm_send`] and [`didcomm_receive`].
 
 Note: Encryption keys are X25519 keys
 
@@ -213,6 +224,31 @@ Note: Encryption keys are X25519 keys
     "encryptionOthersPublic":"d00bf764a187ea092b270277c24858653341559c31463ef576220b76412c2167"
   }
 }
+```
+
+</TabItem>
+</Tabs>
+
+## Query stored didcomm messages by thid and msg id
+
+All didcomm messages are stored in rocks db and can be fetched by thid (message\_{thid}\_*) or msgid(message\_{thid}\_{msgid}).
+
+<Tabs groupId="vade_input">
+<TabItem value="send_message" label="didcomm_send command">
+
+```sh
+vade_options={"encryptionKeys":{"encryptionMySecret":"5046adc1dba838867b2bbbfdd0c3423e58b57970b5267a90f57960924a87f156","encryptionOthersPublic":"d92f5eeaa24fd4e66221c770f704a5e2639a476bab82cfec40bd2874abeb481f"}}
+
+vade_payload={"type":"https://didcomm.org/issue-credential/1.0/request-credential","from":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp","to":["did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG"],"body":{"data_attach":[{"id":"id","mime_type":"application/json","data":{"base64":"eyJjcmVkZW50aWFsU2NoZW1hIjoiZGlkOmV2YW46emtwOjB4ZDY0MWMyNjE2MWU3NjljZWY0YjQxNzYwMjExOTcyYjI3NGE4ZjM3ZjEzNWEzNDA4M2U0ZTQ4YjNmMTAzNWVkYSIsImNyZWRlbnRpYWxWYWx1ZXMiOnsiaWQiOiJkaWQ6ZXZhbjp0ZXN0Y29yZToweDY3Y2U4YjAxYjNiNzVhOWJhNGExNDYyMTM5YTFlZGFhMGQyZjUzOWYiLCJkYXRhIjp7Im5hbWUiOiJCb2IgQm9ic29uIiwic3RyZWV0IjoiNzExLTI4ODAgTnVsbGEgU3QuIiwiY2l0eSI6Ik1hbmthdG8gTWlzc2lzc2lwcGkiLCJ6aXAiOiI5NjUyMiJ9fX0="}}]},"thid":"b4cad08b2d6e4cf8b73a4ec84bedf343"}
+
+./vade_evan_cli didcomm send --options $vade_options --payload $vade_payload
+```
+
+</TabItem>
+<TabItem value="query_didcomm_messages" label="query_didcomm_messages by thid">
+
+```sh
+./vade_evan_cli didcomm query_didcomm_messages --payload message_b4cad08b2d6e4cf8b73a4ec84bedf343_*
 ```
 
 </TabItem>
@@ -403,20 +439,6 @@ receiver_option={"encryptionKeys":{"encryptionMySecret":"f068e2f7ccc3eee220065e1
       ],
       "comment":"Hi"
    },
-   "messageRaw":{
-      "body":null,
-      "created_time":1637054158,
-      "expires_time":null,
-      "from":"did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
-      "id":"5bbb0be3-accb-4dba-bb9f-9122ededb45a",
-      "pthid":null,
-      "type":"https://didcomm.org/trust_ping/1.0/ping",
-      "thid":null,
-      "to":[
-         "did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG"
-      ],
-      "comment":"Hi"
-   },
    "metadata":{
 
    }
@@ -542,3 +564,5 @@ Complete test cases and flow for various protocols can be found at [`Protocols t
 [`issue credential protocol`]: https://github.com/hyperledger/aries-rfcs/tree/main/features/0036-issue-credential#preview-credential
 [`presentation exchange protocol`]: https://identity.foundation/presentation-exchange/
 [`protocols test cases`]: https://git.slock.it/equs/interop/vade/vade-didcomm/-/blob/main/tests
+[`create-keys`]: /docs/plugins/didcomm#generating-keys-for-didcomm-communication
+[`query_didcomm_messages`]: /docs/plugins/didcomm#query-stored-didcomm-messages-by-thid-and-msg-id

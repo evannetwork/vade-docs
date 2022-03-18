@@ -20,8 +20,8 @@ async fn did_create(
 | Argument  | Description |
 | ------------- | ------------- |
 | did_method  | did method to cater to, usually "did:evan"  |
-| options  | of type [`IdentityArguments`]  |
-| payload  | no payload required for vade-evan-substrate DID, so can be left empty  |
+| options  | of type [`IdentityArguments`] for [`vade-evan-substrate`] or can be left empty for [`vade-sidetree`] plugin |
+| payload  | no payload required for [`vade-evan-substrate`] and [`vade-sidetree`], so can be left empty  |
 
 ### did_update
 
@@ -38,7 +38,7 @@ async fn did_update(
 | ------------- | ------------- |
 | did | DID to update data for  |
 | options  | of type [`DidUpdateArguments`] |
-| payload  | DID document to set or empty |
+| payload  | DID document to set or empty for [`vade-evan-substrate`], for [`vade-sidetree`] parameter of type [`DidUpdatePayload`] is required |
 
 ### did_resolve
 
@@ -267,6 +267,28 @@ pub struct DidUpdateArguments {
 | identity  | DID |
 | operation  | update operation  |
 
+### DidUpdatePayload
+
+```sh
+pub struct DidUpdatePayload {
+    pub update_type: UpdateType,
+    pub update_key: Option<JsonWebKey>,
+    pub recovery_key: Option<JsonWebKey>,
+    pub update_commitment: Option<String>,
+    pub recovery_commitment: Option<String>,
+    pub patches: Option<Vec<Patch>>,
+}
+```
+
+| Parameter  | Description |
+| ------------- | ------------- |
+| update_type  | of type [`UpdateType`]  |
+| update_key  | optional value of type [`JsonWebKey`] |
+| recovery_key  |  optional value of type [`JsonWebKey`]  |
+| update_commitment  | of type String  |
+| recovery_commitment  | of type String |
+| patches  | Vec of type [`Patch`] |
+
 ### EncryptionKeys
 
 Either a computed shared secret or a (local) private key plus a contacts public key
@@ -349,6 +371,29 @@ pub struct IssueCredentialPayload {
 | issuer_public_key_id  | DID url of the public key of the issuer used to later verify the signature |
 | issuer_public_key | The public key of the issuer used to later verify the signature |
 
+### JsonWebKey
+
+```sh
+pub struct JsonWebKey {
+    #[serde(rename = "kty")]
+    pub key_type: String,
+    #[serde(rename = "crv")]
+    pub curve: String,
+    pub x: String,
+    pub y: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub d: Option<String>,
+}
+```
+
+| Parameter  | Description |
+| ------------- | ------------- |
+| key_type  | key type of type String |
+| curve  | curve id of type String |
+| x | of type String |
+| y  | of type String |
+| d | optional argument of type String |
+
 ### ProofVerification
 
 ```sh
@@ -360,6 +405,21 @@ pub struct ProofVerification {
 | Parameter  | Description |
 | ------------- | ------------- |
 | verified  | true/false  |
+
+### Patch
+
+Enum to define type of Patches for did_update
+
+```sh
+pub enum Patch {
+    AddPublicKeys(AddPublicKeys),
+    RemovePublicKeys(RemovePublicKeys),
+    AddServiceEndpoints(AddServices),
+    RemoveServiceEndpoints(RemoveServices),
+    Replace(ReplaceDocument),
+    IetfJsonPatch,
+}
+```
 
 ### SigningKeys
 
@@ -419,17 +479,17 @@ pub struct UnsignedCredential {
 }
 ```
 
-| Parameter  | Description |
-| ------------- | ------------- |
-| context  | context (e.g: <https://www.w3.org/2018/credentials/v1>)  |
-| id  | unique id |
-| r#type  | type value(usually ["VerifiableCredential"])  |
-| issuer  | DID of Issuer |
-| valid_until  | optional validity date  |
-| issuance_date  | Date of issuance |
-| credential_subject  | type of [`CredentialSubject`]  |
-| credential_schema  | type of [`CredentialSchemaReference`] |
-| credential_status  | type of [`CredentialStatus`]  |
+### UpdateType
+
+Enum to define type of updates
+
+```sh
+pub enum UpdateType {
+    Update,
+    Recovery,
+    Deactivate,
+}
+```
 
 ### VadeDidCommPluginOutput
 
@@ -493,3 +553,9 @@ pub struct VerifyProofPayload {
 [`ProofVerification`]: /docs/references#proofverification
 [`generating keys`]: /docs/plugins/didcomm#generating-keys-for-didcomm-communication
 [`query_didcomm_messages`]: /docs/plugins/didcomm#query-stored-didcomm-messages-by-thid-and-msg-id
+[`DidUpdatePayload`]: /docs/references#didupdatepayload
+[`vade-evan-substrate`]: /docs/plugins/dids/evan
+[`vade-sidetree`]: docs/plugins/dids/sidetree
+[`JsonWebKey`]: /docs/references#jsonwebkey
+[`Patch`]: /vade-docs/docs/references#patch
+[`UpdateType`]: /vade-docs/docs/references#updatetype

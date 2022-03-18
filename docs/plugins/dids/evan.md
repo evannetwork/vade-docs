@@ -18,14 +18,11 @@ It implements the following [`VadePlugin`] functions:
 
 | Parameter  | Description |
 | ------------- | ------------- |
-| options  | Object of [`IdentityArguments`]  |
+| options  | Object of [`IdentityArguments`] and an additional type property has to be passed to indicate the did implementation to be used |
 | method  | DID method, in our case the method is "did:evan" |
 
 ```json
-options={
-   "privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106",
-   "identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906"
-}
+options={"privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106","identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906","type":"substrate"}
 
 method="did:evan"
 ```
@@ -52,11 +49,7 @@ method="did:evan"
 ```json
 did=did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906
 
-options={
-   "privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106",
-   "identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906",
-   "operation":"setDidDocument"
-}
+options={"privateKey":"dfcdcb6d5d09411ae9cbe1b0fd9751ba8803dd4b276d5bf9488ae4ede2669106","identity":"did:evan:0x0d87204c3957d73b68ae28d0af961d3c72403906","operation":"setDidDocument","type":"substrate"}
 
 payload="hello world"
 ```
@@ -68,31 +61,34 @@ payload="hello world"
 - `did-resolve`
 
 ```sh
-./vade_evan_cli did resolve --did did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736
+./vade_evan_cli did resolve --did "did:evan:testcore:0xc88d707c2436fa3ce4a1e52d751469acae689fdb"
 ```
 
 - Output
 
 ```json
 {
-   "@context":[
-      "https://www.w3.org/ns/did/v1",
-      "https://identity.foundation/EcdsaSecp256k1RecoverySignature2020/lds-ecdsa-secp256k1-recovery2020-0.0.jsonld"
-   ],
-   "id":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736",
-   "verificationMethod":[
+   "@context":"https://w3id.org/did/v1",
+   "id":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403902",
+   "publicKey":[
       {
-         "id":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller",
-         "type":"EcdsaSecp256k1RecoveryMethod2020",
-         "controller":"did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736",
-         "blockchainAccountId":"0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736@eip155:1"
+         "id":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906#key-1",
+         "type":"Secp256k1VerificationKey2018",
+         "controller":"did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906",
+         "ethereumAddress":"0xcd5e1dbb5552c2baa1943e6b5f66d22107e9c05c"
       }
    ],
    "authentication":[
-      "did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller"
+      "did:evan:testcore:0x0d87204c3957d73b68ae28d0af961d3c72403906#key-1"
    ],
+   "created":"2022-22-22T22:22:22.222Z",
+   "updated":"2022-22-22T22:22:22.222Z",
    "assertionMethod":[
-      "did:ethr:mainnet:0x3b0BC51Ab9De1e5B7B6E34E5b960285805C41736#controller"
+      {
+         "id":"did:evan:testcore:0xc88d707c2436fa3ce4a1e52d751469acae689fdb#bbs-key-e9483702-10e6-4ae7-a028-c81a297119d8",
+         "type":"Bls12381G2Key2020",
+         "publicKeyBase58":"zuy3qRuZc5hXNn8aw18Mo1p3do3tVgeT6mko8woxeDmAREpe41YyiBTsmRqCKNZcsoxHdGpvpGeeHoJXNEhF8PtT2DCUkhmHFRCGPjUL1Lm4c2T4WouzKvqc1N6M1NWPeVP"
+      }
    ]
 }
 ```

@@ -1,0 +1,505 @@
+---
+sidebar_position: 1
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# did:evan (sidetree)
+
+[`vade-sidetree`] plugin allows you to create,update and read DIDs based on sidetree implemetation.
+
+It implements the following [`VadePlugin`] functions:
+
+- [`did_create`]
+- [`did_resolve`]
+- [`did_update`]
+
+## Usage
+
+- ### [`did_create`] 
+
+Requires following params to be passed
+
+| Parameter  | Description |
+| ------------- | ------------- |
+| options | type property has to be passed to indicate the did implementation to be used |
+| method  | DID method, in our case the method is "did:evan" |
+
+<Tabs groupId="vade_input">
+<TabItem value="json_args" label="Vade Cli">
+
+```json
+options={"type":"sidetree"}
+
+method="did:evan"
+```
+
+```sh
+./vade_evan_cli did create --method $method --options $options
+
+```
+</TabItem>
+
+<TabItem value="output" label="Vade Output">
+
+```json
+{
+   "update_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"7-pRhpQ8sV1kHL443G6EFJnWXdSmUBv1ZqOHeBC1Ymk",
+      "y":"TjI-Muag1hkfSUk2FNHKetS8II13OwCDD2cjWfWBtrA",
+      "d":"fBCJHYcKnHV4Vc1MUsmffQLEB3kLc9gnpWrSXiKQlp0"
+   },
+   "recovery_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"_ph315rHW-VF6as-nrdaV4r_N4mE8-Fe3HmsI0LeJBY",
+      "y":"R4YEjaDEP_jfQIKY8rAOEl2XbGvJ6-kp2vqyzM0liO8",
+      "d":"gnO2SjmWhu6P7ePvMQaXvfZRTfVkEPjEr9BVP8q2QOA"
+   },
+   "did":{
+      "@context":"https://w3id.org/did-resolution/v1",
+      "didDocument":{
+         "id":"did:evan:EiC7uIezuR8EpwSP2P6DINtl_VkbaA6qmPTzr_22BJtZtg",
+         "@context":[
+            "https://www.w3.org/ns/did/v1",
+            "https://ns.did.ai/transmute/v1",
+            {
+               "@base":"did:evan:EiC7uIezuR8EpwSP2P6DINtl_VkbaA6qmPTzr_22BJtZtg"
+            }
+         ],
+         "keyAgreement":[
+            {
+               "id":"#key-1",
+               "controller":"did:evan:EiC7uIezuR8EpwSP2P6DINtl_VkbaA6qmPTzr_22BJtZtg",
+               "type":"EcdsaSecp256k1VerificationKey2019",
+               "publicKeyJwk":{
+                  "kty":"EC",
+                  "crv":"secp256k1",
+                  "x":"TkWKbz5ZfAYTCt7miLXO9CxsRguumhs4q-1Ky3PtGb8",
+                  "y":"UnvZsjI0KigY0o9AXsXk86keK7J7x-B2xtc0yZcn4HA"
+               }
+            }
+         ],
+         "service":null
+      },
+      "didDocumentMetadata":{
+         "recoveryCommitment":"EiA2YL0BWPQd9cmRRkZ8R0II2NdpVwlvmRHd1pqByrk5JA",
+         "updateCommitment":"EiDT0mi3vtYMy5LDHN6dvbL7OHDGlAvb3eKlbBDdn04DvA"
+      }
+   }
+}
+```
+</TabItem>
+</Tabs>
+
+- ### [`did_resolve`]
+
+<Tabs groupId="vade_input">
+<TabItem value="json_args" label="Vade Cli">
+
+```sh
+./vade_evan_cli did resolve --did did:evan:EiC7uIezuR8EpwSP2P6DINtl_VkbaA6qmPTzr_22BJtZtg
+```
+
+</TabItem>
+
+<TabItem value="Output" label="Vade output">
+
+```json
+{
+   "@context":"https://w3id.org/did-resolution/v1",
+   "didDocument":{
+      "@context":[
+         "https://www.w3.org/ns/did/v1",
+         "https://ns.did.ai/transmute/v1",
+         {
+            "@base":"did:evan:EiC7uIezuR8EpwSP2P6DINtl_VkbaA6qmPTzr_22BJtZtg"
+         }
+      ],
+      "id":"did:evan:EiC7uIezuR8EpwSP2P6DINtl_VkbaA6qmPTzr_22BJtZtg",
+      "keyAgreement":[
+         {
+            "id":"#key-1",
+            "controller":"did:evan:EiC7uIezuR8EpwSP2P6DINtl_VkbaA6qmPTzr_22BJtZtg",
+            "type":"EcdsaSecp256k1VerificationKey2019",
+            "publicKeyJwk":{
+               "kty":"EC",
+               "crv":"secp256k1",
+               "x":"TkWKbz5ZfAYTCt7miLXO9CxsRguumhs4q-1Ky3PtGb8",
+               "y":"UnvZsjI0KigY0o9AXsXk86keK7J7x-B2xtc0yZcn4HA"
+            }
+         }
+      ]
+   },
+   "didDocumentMetadata":{
+      "recoveryCommitment":"EiA2YL0BWPQd9cmRRkZ8R0II2NdpVwlvmRHd1pqByrk5JA",
+      "updateCommitment":"EiDT0mi3vtYMy5LDHN6dvbL7OHDGlAvb3eKlbBDdn04DvA"
+   }
+}
+```
+
+</TabItem>
+</Tabs>
+
+- ### [`did_update`]
+
+Updates data related to a DID. Updates are supported as per [Sidetree documentation](https://identity.foundation/sidetree/spec/#update).
+
+| Parameter  | Description |
+| ------------- | ------------- |
+| did  | DID to be updated  |
+| options  | type property has to be passed to indicate the did implementation to be used |
+| payload  | object of [`DidUpdatePayload`] |
+
+Following type of updates are possible with sidetree based implementation.
+
+#### Addkey
+
+To add key we need some details from did_create output, e.g following is the output of did_create and corresponding did_update payload for add key operation.
+
+<Tabs groupId="vade_input">
+<TabItem value="create_key" label="Create key Output">
+
+```json
+{
+   "update_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"dUVoi-cP49f8NU0xdvx2NwrrsciWOIVzTVha2cysKI8",
+      "y":"P7GErcsOHwSCXVp3EH9HXT-akrbR0eZ7Z1CFfcJ0Eo8",
+      "d":"jkHKQyybb1EL6wI8O_JFYb275Pq46Vs1fvvfMVA9ncs"
+   },
+   "recovery_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"ht0VGXEMdYihLoJR0wZpRRuXVRJEvrjOt20qZ77rTmw",
+      "y":"BlGVlYtaedI0pP0wWuGtG6lTePCobNguyxnrjDzuzOk",
+      "d":"LHmoSspXNjhOi0iERscGqCyFbKNwUxOpeom-Dqckwjo"
+   },
+   "did":{
+      "@context":"https://w3id.org/did-resolution/v1",
+      "didDocument":{
+         "id":"did:evan:EiBxTar2-k1T_qvoXUbwtbGF6U6Rp9P2xfzZxaSdIU2WVw",
+         "@context":[
+            "https://www.w3.org/ns/did/v1",
+            "https://ns.did.ai/transmute/v1",
+            {
+               "@base":"did:evan:EiBxTar2-k1T_qvoXUbwtbGF6U6Rp9P2xfzZxaSdIU2WVw"
+            }
+         ],
+         "keyAgreement":[
+            {
+               "id":"#key-1",
+               "controller":"did:evan:EiBxTar2-k1T_qvoXUbwtbGF6U6Rp9P2xfzZxaSdIU2WVw",
+               "type":"EcdsaSecp256k1VerificationKey2019",
+               "publicKeyJwk":{
+                  "kty":"EC",
+                  "crv":"secp256k1",
+                  "x":"0KBt2gQ83ispsziw0CVju3VJxJ8AaSpL0cFmWDULwsY",
+                  "y":"0SLYbjLbeEFxAjqcNjCInKP3Gk6qO2pLo-h_ZabwyrY"
+               }
+            }
+         ],
+         "service":null
+      },
+      "didDocumentMetadata":{
+         "recoveryCommitment":"EiDjHkZ0lTX3OHC3Jbkpo1OL-F3AtOwJ5DjpnjdpsecoQg",
+         "updateCommitment":"EiA5fQ5a68T0iSq_IFIqQH60WoomPGgayxsZbhn-RNgVIw"
+      }
+   }
+}
+```
+</TabItem>
+
+<TabItem value="did_update" label="did_update params">
+
+For detailed information about params please visit [Sidetree documentation](https://identity.foundation/sidetree/spec/#update).
+
+```json
+options={"type":"sidetree"}
+
+did="did:evan:EiBxTar2-k1T_qvoXUbwtbGF6U6Rp9P2xfzZxaSdIU2WVw"
+
+payload={"update_type":"update","update_key":{"kty":"EC","crv":"secp256k1","x":"dUVoi-cP49f8NU0xdvx2NwrrsciWOIVzTVha2cysKI8","y":"P7GErcsOHwSCXVp3EH9HXT-akrbR0eZ7Z1CFfcJ0Eo8","d":"jkHKQyybb1EL6wI8O_JFYb275Pq46Vs1fvvfMVA9ncs"},"recovery_key":null,"update_commitment":"EiDwa_i-HpZ7g5NYtGbjVy0BbMqdtawejkbtpwnC2GDZTw","recovery_commitment":null,"patches":[{"action":"add-public-keys","public_keys":[{"id":"update_key","type":"EcdsaSecp256k1VerificationKey2019","purpose":["agreement"],"jwk":{"kty":"EC","crv":"secp256k1","x":"dAN12kchKHHDgh8hpwk2UY-m3t9VfKh5C4KeZjPKAaM","y":"3Pbygl7ysqvj9kJMUUCMNWR9bgXlmfGvdjD9Avj4in0"}}]}]}
+```
+
+```sh
+./vade_evan_cli did update --did $did --options $options --payload $payload
+```
+</TabItem>
+</Tabs>
+
+#### Add Service
+
+To add service we need some details from did_create output, e.g following is the output of did_create and corresponding did_update payload for add service operation.
+
+<Tabs groupId="vade_input">
+<TabItem value="create_key" label="Create key Output">
+
+```json
+{
+   "update_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"HGYPQwfFgIulDxceg_-yTJUOEebgKQM_eSXyv_oQkOY",
+      "y":"WNoUOrVanw3Jh3Ayuotkka9q-m_Ds2MeKUcRJFLPaVs",
+      "d":"F_au0HfIfGKdL66VYcxOa8rYhRCLz3tiXIojAoYl1JE"
+   },
+   "recovery_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"LTx1AWbqLaoDr5T9PGmCNyuaakgNJdMILkFn5asM1UE",
+      "y":"UzdtqDfuxeYLy6C2KYTsl-iUXZbgGqVtIwUAKcwPpXc",
+      "d":"hIU0XbvvcFibxbKpoNItzqU0me-NZ_UmawWScJUZjhI"
+   },
+   "did":{
+      "@context":"https://w3id.org/did-resolution/v1",
+      "didDocument":{
+         "id":"did:evan:EiC7r9wqZ9BiV8y37ShX1Wzfb_x-OjYUdNOrRWt8oYSiRQ",
+         "@context":[
+            "https://www.w3.org/ns/did/v1",
+            "https://ns.did.ai/transmute/v1",
+            {
+               "@base":"did:evan:EiC7r9wqZ9BiV8y37ShX1Wzfb_x-OjYUdNOrRWt8oYSiRQ"
+            }
+         ],
+         "keyAgreement":[
+            {
+               "id":"#key-1",
+               "controller":"did:evan:EiC7r9wqZ9BiV8y37ShX1Wzfb_x-OjYUdNOrRWt8oYSiRQ",
+               "type":"EcdsaSecp256k1VerificationKey2019",
+               "publicKeyJwk":{
+                  "kty":"EC",
+                  "crv":"secp256k1",
+                  "x":"AOcmat2SXqFIpn6lVfKSIv45bcV883mzHus5mZzjsX4",
+                  "y":"FP-AKa-aeResq3bhAz8EDKh6t_SLO-PSrA-55-N3TO0"
+               }
+            }
+         ],
+         "service":null
+      },
+      "didDocumentMetadata":{
+         "recoveryCommitment":"EiBDIQ2Lej5eVh6WfzTTqmRl5YaLSuPniHluJ4gJSaPFNg",
+         "updateCommitment":"EiBTghKIkbtcS3l1eAz0l-FHP9mI_wIOKxEa_TgeZ6toeQ"
+      }
+   }
+}
+```
+</TabItem>
+
+<TabItem value="did_update" label="did_update params">
+
+For detailed information about params please visit [Sidetree documentation](https://identity.foundation/sidetree/spec/#update).
+
+```json
+options={"type":"sidetree"}
+
+did="did:evan:EiC7r9wqZ9BiV8y37ShX1Wzfb_x-OjYUdNOrRWt8oYSiRQ"
+
+payload={"update_type":"update","update_key":{"kty":"EC","crv":"secp256k1","x":"HGYPQwfFgIulDxceg_-yTJUOEebgKQM_eSXyv_oQkOY","y":"WNoUOrVanw3Jh3Ayuotkka9q-m_Ds2MeKUcRJFLPaVs","d":"F_au0HfIfGKdL66VYcxOa8rYhRCLz3tiXIojAoYl1JE"},"recovery_key":null,"update_commitment":"EiDbplHWF4Tj5l5EjIx69NktBS685LHqs3yTI4a_hn2t6Q","recovery_commitment":null,"patches":[{"action":"add-service-endpoints","service_endpoints":[{"id":"sds","type":"SecureDataStrore","endpoint":"https://w3id.org/did-resolution/v1"}]}]}
+```
+
+```sh
+./vade_evan_cli did update --did $did --options $options --payload $payload
+```
+</TabItem>
+</Tabs>
+
+#### Remove Service
+
+To remove service we need some details from did_create output, e.g following is the output of did_create and corresponding did_update payload for add service operation.
+
+<Tabs groupId="vade_input">
+<TabItem value="create_key" label="Create key Output">
+
+```json
+{
+   "update_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"oKI9i4X4oKV3f6dmV_TcDA5JQJ2Gqmc6luS-jXfZ-2s",
+      "y":"1Vn70Z4WFhQkxy6PquaurkpvB68J5DcwTY2M17hFqVw",
+      "d":"bo5WeoIsZhUl6o-okJUOothJ9EfkmFZz5SWmb_x-W2c"
+   },
+   "recovery_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"d5YoP03mA4Yc6zS-kt3x88lY1-BnrDYs65SHxuNHDBc",
+      "y":"JUCjkELk1EA0-RnZ92BFw4G6jYqlGhUv8g-OHdnEFbA",
+      "d":"YTx8uc-rGUusSmheOJDC406oWK0l1fp3fNgBpuQBLSg"
+   },
+   "did":{
+      "@context":"https://w3id.org/did-resolution/v1",
+      "didDocument":{
+         "id":"did:evan:EiA-AS9fbd-pD87z81A21GK-rLmkyEZt2L99nsY4mY9ZXw",
+         "@context":[
+            "https://www.w3.org/ns/did/v1",
+            "https://ns.did.ai/transmute/v1",
+            {
+               "@base":"did:evan:EiA-AS9fbd-pD87z81A21GK-rLmkyEZt2L99nsY4mY9ZXw"
+            }
+         ],
+         "keyAgreement":[
+            {
+               "id":"#key-1",
+               "controller":"did:evan:EiA-AS9fbd-pD87z81A21GK-rLmkyEZt2L99nsY4mY9ZXw",
+               "type":"EcdsaSecp256k1VerificationKey2019",
+               "publicKeyJwk":{
+                  "kty":"EC",
+                  "crv":"secp256k1",
+                  "x":"RMy03chKzaC3d2BR7FQAjBtas2qY0cCl0pxQBQIw8Rw",
+                  "y":"mIm2FztNVSQOMkBwuJUCB5e7Q0Zm0nyLy13_76-1Xrk"
+               }
+            }
+         ],
+         "service":null
+      },
+      "didDocumentMetadata":{
+         "recoveryCommitment":"EiBt_-JinFdmlufuuk4mTG-3onxOCBseOALOTkuZ4NwboA",
+         "updateCommitment":"EiCF6UJwdLzXZiFy8YzaUDCH7ku7CGV216Xkhyy0wJWCqw"
+      }
+   }
+}
+```
+</TabItem>
+
+<TabItem value="did_update" label="did_update params">
+
+For detailed information about params please visit [Sidetree documentation](https://identity.foundation/sidetree/spec/#update).
+
+```json
+options={"type":"sidetree"}
+
+did="did:evan:EiA-AS9fbd-pD87z81A21GK-rLmkyEZt2L99nsY4mY9ZXw"
+
+payload={"update_type":"update","update_key":{"kty":"EC","crv":"secp256k1","x":"2N3fjBQro7NnNO8Y_yy-Q8o4BeM-Xf5n5G7SRapXIuU","y":"8oYnJmR-Ctke3iBOIJNN_xSVBgs5tjIfpbGqBvQFv1o","d":"EWailQZtd6w5u94gd06oNxq1KEwG8qM76X8grQO5iF4"},"recovery_key":null,"update_commitment":"EiCE50W368yRVL6akLxz-HV-vj40yAN8H5GSN9fi3AmU2g","recovery_commitment":null,"patches":[{"action":"remove-service-endpoints","ids":["sds"]}]}
+```
+
+```sh
+./vade_evan_cli did update --did $did --options $options --payload $payload
+```
+</TabItem>
+</Tabs>
+
+- ### Recover a DID with sidetree
+
+With recover operation, we can reset the DID Document when the update key is lost.
+
+<Tabs groupId="vade_input">
+<TabItem value="create_key" label="Create key Output">
+
+```json
+{
+   "update_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"RsXtxDG7vVDji_YWoTvdab-PoERDM3CvAZSplzSwXC0",
+      "y":"BBTcawafQLBvNAs13_KnFGoz4Ek4eJgfWEG7nCC1edg",
+      "d":"-EHmAJ29wI16KmNnOgRDU3mrJhQDGFSUj3jSWzPXW2g"
+   },
+   "recovery_key":{
+      "kty":"EC",
+      "crv":"secp256k1",
+      "x":"64SVzHzVaI7lXPqSWTao_GmzUZLY3KjAJhZ5jskSBpU",
+      "y":"bC5ESdsm6SfvbiIzwdIZQApWPzp6ZNpNcuEPanhLG-M",
+      "d":"362OQHKbBgmFxToIjbvbNJtw5ek5glN3xNwkUkZwaPw"
+   },
+   "did":{
+      "@context":"https://w3id.org/did-resolution/v1",
+      "didDocument":{
+         "id":"did:evan:EiBaEtcaprzTyUhoRdXjK1fGerAr6APIc6u9pT--EOK4nQ",
+         "@context":[
+            "https://www.w3.org/ns/did/v1",
+            "https://ns.did.ai/transmute/v1",
+            {
+               "@base":"did:evan:EiBaEtcaprzTyUhoRdXjK1fGerAr6APIc6u9pT--EOK4nQ"
+            }
+         ],
+         "keyAgreement":[
+            {
+               "id":"#key-1",
+               "controller":"did:evan:EiBaEtcaprzTyUhoRdXjK1fGerAr6APIc6u9pT--EOK4nQ",
+               "type":"EcdsaSecp256k1VerificationKey2019",
+               "publicKeyJwk":{
+                  "kty":"EC",
+                  "crv":"secp256k1",
+                  "x":"9vQYMhGlNt_d9spqSoP6YynP37RkWLVJTggyAvg7XBA",
+                  "y":"u_pKsB03edAoyq7xdezGk8Mv4lLVZZR0BHPi9ksLJgA"
+               }
+            }
+         ],
+         "service":null
+      },
+      "didDocumentMetadata":{
+         "recoveryCommitment":"EiDkrgs7TO2_EMGGXiJ-NNNuoF0T72KrBGYgMcrqKN5zPA",
+         "updateCommitment":"EiArlQtyN9JefMxscMz05wcm0sZC3kGgDFYPgCmnQ-KWGw"
+      }
+   }
+}
+```
+</TabItem>
+
+<TabItem value="did_update" label="did_update params">
+
+For detailed information about params please visit [Sidetree documentation](https://identity.foundation/sidetree/spec/#update).
+
+```json
+options={"type":"sidetree"}
+
+did="did:evan:EiBaEtcaprzTyUhoRdXjK1fGerAr6APIc6u9pT--EOK4nQ"
+
+payload={"update_type":"recovery","update_key":{"kty":"EC","crv":"secp256k1","x":"cIqVlAoU7pBhuJsjzmhQbp1WyKfN2ehXV-cLOdEaeKI","y":"zsfs6u3EOc3udT3XM006zLVS6tdvoRWTVoha3IJPs5Q"},"recovery_key":{"kty":"EC","crv":"secp256k1","x":"64SVzHzVaI7lXPqSWTao_GmzUZLY3KjAJhZ5jskSBpU","y":"bC5ESdsm6SfvbiIzwdIZQApWPzp6ZNpNcuEPanhLG-M","d":"362OQHKbBgmFxToIjbvbNJtw5ek5glN3xNwkUkZwaPw"},"update_commitment":"EiDSDfaKcrXoJcc5my_9QYlZYxhJoNMZL7GI9sQk06Aphw","recovery_commitment":"EiDOQ0qK0cDKetIKT8QeGNU_nyaz88ZJwGDF3pgSQ4iKKQ","patches":[{"action":"replace","document":{"public_keys":[{"id":"doc_key","type":"EcdsaSecp256k1VerificationKey2019","purpose":["agreement"],"jwk":{"kty":"EC","crv":"secp256k1","x":"cIqVlAoU7pBhuJsjzmhQbp1WyKfN2ehXV-cLOdEaeKI","y":"zsfs6u3EOc3udT3XM006zLVS6tdvoRWTVoha3IJPs5Q"}}]}}]}
+```
+
+```sh
+./vade_evan_cli did update --did $did --options $options --payload $payload
+```
+</TabItem>
+
+<TabItem value="did_resolve" label="did_resolve output after recovery">
+
+```json
+{
+   "@context":"https://w3id.org/did-resolution/v1",
+   "didDocument":{
+      "@context":[
+         "https://www.w3.org/ns/did/v1",
+         "https://ns.did.ai/transmute/v1",
+         {
+            "@base":"did:evan:EiBaEtcaprzTyUhoRdXjK1fGerAr6APIc6u9pT--EOK4nQ"
+         }
+      ],
+      "id":"did:evan:EiBaEtcaprzTyUhoRdXjK1fGerAr6APIc6u9pT--EOK4nQ",
+      "keyAgreement":[
+         {
+            "id":"#doc_key",
+            "controller":"did:evan:EiBaEtcaprzTyUhoRdXjK1fGerAr6APIc6u9pT--EOK4nQ",
+            "type":"EcdsaSecp256k1VerificationKey2019",
+            "publicKeyJwk":{
+               "kty":"EC",
+               "crv":"secp256k1",
+               "x":"cIqVlAoU7pBhuJsjzmhQbp1WyKfN2ehXV-cLOdEaeKI",
+               "y":"zsfs6u3EOc3udT3XM006zLVS6tdvoRWTVoha3IJPs5Q"
+            }
+         }
+      ]
+   },
+   "didDocumentMetadata":{
+      "recoveryCommitment":"EiDOQ0qK0cDKetIKT8QeGNU_nyaz88ZJwGDF3pgSQ4iKKQ",
+      "updateCommitment":"EiDSDfaKcrXoJcc5my_9QYlZYxhJoNMZL7GI9sQk06Aphw"
+   }
+}
+```
+</TabItem>
+</Tabs>
+
+[`vade-sidetree`]: #
+[`VadePlugin`]: https://docs.rs/vade/*/vade/trait.VadePlugin.html
+[`did_create`]: /docs/references#did_create
+[`did_resolve`]: /docs/references#did_resolve
+[`did_update`]: /docs/references#did_update
+[`DidUpdateArguments`]: /docs/references#didupdatearguments
+[`IdentityArguments`]: /docs/references#identityarguments
+[`DidUpdatePayload`]: /docs/references#didupdatepayload
